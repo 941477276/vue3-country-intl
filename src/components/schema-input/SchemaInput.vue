@@ -1,7 +1,7 @@
 <template>
-  <div class="vue-country-intl"
+  <div class="vue-country-intl-input"
        ref="vueCountryIntlWrapper"
-       :class="{'focused': inputFocused, 'list-on-bottom': listOnBottom, 'list-on-top': !listOnBottom, 'vue-country-disabled': disabled, 'static': static}">
+       :class="{'focused': inputFocused, 'list-on-bottom': listOnBottom, 'list-on-top': !listOnBottom, 'vue-country-disabled': disabled, 'vue-country-readonly': readonly, 'static': static}">
     <div class="country-intl-input-wrap" ref="inputWrap" :class="{'no-data': !selected.item.name, 'has-selected': selected.item.name}" @click="show">
       <input type="text"
              v-model="searchText"
@@ -21,8 +21,10 @@
       <label class="dropdown-flag"></label>
       <div class="prevent-click"></div>
     </div>
-    <country-list
+    <transition name="fade_in_up">
+      <country-list
         ref="countryList"
+        v-show="countryListVisible"
         v-model="schemaInputValue"
         :search-text="searchText"
         :selectedText="selectedText"
@@ -35,8 +37,10 @@
         :no-data-text="noDataText"
         :use-chinese="useChinese"
         @onChange="onCountryChange">
-      <template slot="vueCountryNoData"><slot name="vueCountryNoData"></slot></template>
-    </country-list>
+        <template slot="vueCountryNoData"><slot name="vueCountryNoData"></slot></template>
+      </country-list>
+    </transition>
+
   </div>
 </template>
 

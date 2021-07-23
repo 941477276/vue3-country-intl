@@ -1,7 +1,4 @@
-import { reactive, ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
-import tippy from 'tippy.js';
-import 'tippy.js/dist/tippy.css';
-import 'tippy.js/animations/shift-toward.css';
+import { reactive, ref, computed, watch, nextTick } from 'vue';
 import CountryList from '../country-list/CountryList.vue';
 import {vueCountryTool} from "../vueCountryTool";
 
@@ -110,16 +107,6 @@ export default {
       type: Boolean,
       default: false
     },
-    // popover弹窗额外class。
-    popoverClass: {
-      type: String,
-      default: '',
-    },
-    // tippy.js 的动画名称
-    animation: {
-      type: String,
-      default: 'shift-toward'
-    },
     // 是否使用static布局
     static: {
       type: Boolean,
@@ -155,14 +142,15 @@ export default {
     let searchText = ref('');
     let countryListShow = ref(false); // 列表是否显示
     let inputFocused = ref(false); // input输入框是否获得了焦点
-    let listOnBottom = ref(false); // // 列表在输入框下方
+    let listOnBottom = ref(true); // // 列表在输入框下方
     let isIos = ref(false);
     let deviceWidth = ref(window.innerWidth);
-    console.log('props.value', props.value)
     let schemaInputValue = ref(props.modelValue);
     let searchInput = ref(null);
     let vueCountryIntlWrapper = ref(null);
-    let tippyIns = null;
+    let countryListVisible = computed(() => {
+      return props.static || countryListShow.value;
+    });
 
     // 选择的城市改变事件
     let onCountryChange = (newCountry) => {
@@ -176,28 +164,37 @@ export default {
     }
 
     // 计算弹出层方位
-    let calculatePopoverDirection = () => {
-      let insetCss = vueCountryTool.getStyle(vueCountryIntlWrapper.value.querySelector('[data-tippy-root]'), 'inset');
-      console.log('insetCss', insetCss)
-      if(insetCss < 0){
-        listOnBottom.value = false;
-      }else{
+    let calculatePopoverDirection = (ele, fn) => {
+      let eleInView = vueCountryTool.eleIsIntoView(ele);
+      if (eleInView) { // 元素完全出现在视口中
         listOnBottom.value = true;
+      } else {
+        // console.log('元素未完全出现在视口中，现尝试将位置反过来');
+        // 如果列表朝下不能完全出现在视口时，则尝试将列表朝上
+        ele.style.opacity = 0;
+        listOnBottom.value = false;
+        fn && typeof fn === 'function' && fn();
+        nextTick(() => {
+          ele.style.opacity = null;
+          if (vueCountryTool.eleIsIntoView(ele)) { // 位置反过来后，元素完全出现在视口中
+            // console.log('位置反过来后，元素完全出现在视口中');
+          } else {
+            // 位置反过来后，元素还是不能完全出现在视口中，则将其恢复原来的方向
+            listOnBottom.value = true;
+            fn && typeof fn === 'function' && fn();
+          }
+        });
       }
     }
 
-    let show = (flag) => {
-      if (props.disabled || props.readonly) {
+    let show = () => {
+      if (props.disabled || props.readonly || props.static) {
         return;
       }
       inputFocused.value = true;
       countryListShow.value = true;
       searchText.value = '';
-      console.log('flag', flag)
-      // 外部手动调用时需要传递flag，并且值必须为true
-      if(flag === true && tippyIns){
-        tippyIns.show();
-      }
+
       if(!props.readonly){
         console.log('自动获得焦点')
         let timer = setTimeout(() => {
@@ -205,22 +202,24 @@ export default {
           searchInput.value.focus();
         }, 0);
       }
-      let timer2 = setTimeout(() => {
-        clearTimeout(timer2);
-        calculatePopoverDirection();
-      }, 100);
+
+      // 每次显示时重新计算方位
+      nextTick(() => {
+        calculatePopoverDirection(countryList.value.$el);
+      });
     }
 
     let hide = () => {
-      console.log('blur事件执行了')
+      if (props.disabled || props.readonly || props.static) {
+        return;
+      }
       let timer = setTimeout(() => {
         clearTimeout(timer);
         searchText.value = '';
         inputFocused.value = false;
         countryListShow.value = false;
-        if(tippyIns){
-          tippyIns.hide();
-        }
+        // 隐藏后需要将方位复位，否则会计算不正确
+        listOnBottom.value = true;
       }, 100);
     }
 
@@ -239,52 +238,10 @@ export default {
       }
     });
 
-    onMounted(() => {
-      console.log('countryList', countryList.value.$el)
-      if(!props.static){
-        tippyIns = tippy(inputWrap.value, {
-          trigger: 'click',
-          maxWidth: 'none',
-          allowHTML: true,
-          interactive: true,
-          animation: props.animation,
-          // hideOnClick: true,
-          arrow: false,
-          offset: [0, 0],
-          appendTo: 'parent',
-          content: countryList.value.$el,
-          onShow (instance) {
-            vueCountryTool.addClass(instance.popper, 'vue-country-intl_input_popover');
-            if(props.popoverClass){
-              vueCountryTool.addClass(instance.popper, props.popoverClass);
-            }
-            console.log('instance', instance)
-          }
-        });
-
-        watch([() => props.disabled, () => props.readonly], ([newDisabled, newReadonly]) => {
-          console.log('newDisabled,newReadonly',newDisabled,newReadonly);
-          if(!newDisabled && !newReadonly){
-            tippyIns.enable();
-          }else{
-            tippyIns.disable();
-          }
-        }, { immediate: true });
-      }
-    });
-
-
-    onBeforeUnmount(() => {
-      if(tippyIns){
-        tippyIns.destroy();
-        tippyIns = null;
-      }
-    });
-
     return {
-      id: ref('vue_country_intl-' + (window._vueCountryIntl_count++)),
+      id: ref('vue_country_intl-' + (window._vueCountryIntl_count++ || 1)),
       searchText,
-      countryListShow,
+      countryListVisible,
       inputFocused,
       listOnBottom,
       isIos,

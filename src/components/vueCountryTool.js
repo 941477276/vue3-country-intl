@@ -1,4 +1,4 @@
-export const vueCountryTool = {
+const vueCountryTool = {
   /**
    * 获取元素距浏览器最顶部及最左边的距离
    * @param ele dom元素
@@ -172,5 +172,22 @@ export const vueCountryTool = {
       ele.className = classNameArr.join(' ');
       return ele;
     }
+  },
+  /**
+   * 判断元素是否完全出现在视口中
+   * @param ele dom元素
+   * @returns {boolean}
+   */
+  eleIsIntoView(ele){
+    let rect = vueCountryTool.getElementRect(ele);
+    let wh = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight; // 浏览器高度兼容写法
+
+    if (rect.top > 0 && rect.top < wh && rect.bottom > 0 && rect.bottom < wh) { // 完全出现在视口中
+      return true;
+    }else{
+      return false;
+    }
   }
 };
+
+export {vueCountryTool};
