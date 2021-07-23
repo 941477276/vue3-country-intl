@@ -179,15 +179,25 @@ const vueCountryTool = {
    * @returns {boolean}
    */
   eleIsIntoView(ele){
+    let scrollTop = vueCountryTool.scrollTop();
     let rect = vueCountryTool.getElementRect(ele);
     let wh = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight; // 浏览器高度兼容写法
+    let top = rect.top - scrollTop;
+    let bottom = rect.bottom - scrollTop;
 
-    if (rect.top > 0 && rect.top < wh && rect.bottom > 0 && rect.bottom < wh) { // 完全出现在视口中
+    if (top > 0 && top < wh && bottom > 0 && bottom < wh) { // 完全出现在视口中
       return true;
     }else{
       return false;
     }
-  }
+  },
+  /**
+   * 获取浏览器滚动条的位置
+   * @returns {number|number}
+   */
+  scrollTop () {
+  return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+}
 };
 
 export {vueCountryTool};

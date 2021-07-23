@@ -1,9 +1,9 @@
 <template>
 <!--  <CountryList type="phone" value="+86"></CountryList>-->
-<!--  <SchemaInput ref="schemaInput" type="phone" v-model="schemaInputVal" :readonly="disabled" :static="true"></SchemaInput>-->
-<!--  <SchemaPopover type="phone" v-model="schemaInputVal" :readonly="disabled">
-    <button type="button" slot="reference">显示</button>
-  </SchemaPopover>-->
+  <!--<SchemaInput ref="schemaInput" type="phone" v-model="schemaInputVal" :readonly="disabled" :static="false"></SchemaInput>-->
+  <SchemaPopover type="phone" v-model="schemaInputVal" v-model:visible="popoverVisible" :readonly="disabled">
+    <button type="button" slot="reference" @click="popoverVisible = true">显示</button>
+  </SchemaPopover>
 
 <!--  <SchemaModal v-model="schemaInputVal" v-model:visible="visible"></SchemaModal>
   <button type="button" @click="show">显示</button>-->
@@ -19,16 +19,16 @@
   <button type="button" @click="show">显示</button>
   <VueCountryIntl schema="modal"  type="phone" v-model:visible="visible" v-model="schemaInputVal"></VueCountryIntl>-->
 
-  <DemoDoc></DemoDoc>
+  <!--<DemoDoc></DemoDoc>-->
 </template>
 
 <script setup>
 /*import HelloWorld from './components/HelloWorld.vue'*/
-/*import CountryList from './components/country-list/CountryList.vue';
+import CountryList from './components/country-list/CountryList.vue';
 import SchemaInput from './components/schema-input/SchemaInput.vue';
 import SchemaPopover from './components/schema-popover/SchemaPopover.vue';
 import SchemaModal from './components/schema-modal/SchemaModal.vue';
-import VueCountryIntl from './components/index.vue';*/
+import VueCountryIntl from './components/index.vue';
 import DemoDoc from './DemoDoc.vue';
 import {ref, onMounted} from 'vue';
 
@@ -39,11 +39,19 @@ let schemaInput = ref(null);
 let schemaPopover = ref(null);
 let schemaInputVal = ref('+86');
 let visible = ref(false);
+let popoverVisible = ref(false);
 
 let show = () => {
   console.log(111)
   visible.value = true;
 }
+
+/*
+setTimeout(() => {
+  console.log('手动展现');
+  schemaInput.value.show();
+}, 1500);
+*/
 
 /*onMounted(() => {
   setTimeout(() => {
@@ -69,12 +77,11 @@ let show = () => {
 </script>
 
 <style scoped>
-.vue-country-popover-container{
-  margin-top: 500px;
-}
+
 </style>
-<!--<style>
+<style>
 body{
+  padding: 700px 50px 50px 50px;
   height: 2000px;
 }
-</style>-->
+</style>

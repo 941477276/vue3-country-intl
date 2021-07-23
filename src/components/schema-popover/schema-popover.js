@@ -1,9 +1,6 @@
-import { ref, reactive, watch, onMounted, onBeforeUnmount } from 'vue';
+import { ref, reactive, watch, onMounted, nextTick, onBeforeUnmount } from 'vue';
 import CountryList from '../country-list/CountryList.vue';
 import {vueCountryTool} from "../vueCountryTool";
-import tippy from 'tippy.js';
-import 'tippy.js/dist/tippy.css';
-import 'tippy.js/animations/shift-toward.css';
 
 export default {
   name: "SchemaPopover",
@@ -12,6 +9,10 @@ export default {
   },
   inheritAttrs: false,
   props: {
+    visible: { // 是否展示
+      type: Boolean,
+      default: false
+    },
     // 是否显示区号
     showAreaCode: {
       type: Boolean,
@@ -128,63 +129,109 @@ export default {
       type: Boolean,
       default: false
     },
-    // tippy.js 的动画名称
-    animation: {
-      type: String,
-      default: 'shift-toward'
-    },
-    // tippy距离点击区域的距离
+    // popover弹窗距离点击区域的距离
     offset: {
       type: Array,
       default(){
         return [0, 10]
       }
     },
-    // tippy 的placement
-    placement: {
+    // popover弹窗距离浏览器右侧距离，该值只有在小屏下有效
+    rightOffset: {
+      type: Number,
+      default: 20
+    },
+    transitionName: { // 过度效果名称
       type: String,
-      default: 'top-start'
+      default: 'zoom_in'
     }
   },
+  emits: ['update:modelValue', 'onChange', 'update:visible'],
   setup(props, ctx){
     let selected = reactive({
       item: {}
     });
     let searchText = ref('');
     let countryListShow = ref(false); // 列表是否显示
-    let listOnBottom = ref(false); // // 列表在输入框下方
+    let listOnBottom = ref(true); // // 列表在输入框下方
     let schemaPopoverValue = ref(props.modelValue);
     let popoverContainer = ref(null);
-    let popoverContent = ref(null);
-    let tippyIns = null;
+    let popover = ref(null);
+    let popoverVisible = ref(false);
 
-    // 选择的城市改变事件
-    let onCountryChange = (newCountry) => {
-      console.log('onCountryChange执行了')
-      console.log('设置selected', newCountry, newCountry.iso2, selected.item.iso2)
-      if(newCountry.iso2 !== selected.item.iso2){
-        console.log('设置selected111')
-        selected.item = newCountry;
-        ctx.emit('onChange', newCountry);
-        if(tippyIns){
-          tippyIns.hide();
-        }
+    // popover 定位数据
+    let popoverPosition = reactive({
+      left: '-100%',
+      top: '-100%'
+    });
+    let popoverMaxWidth = ref(null);
+
+
+
+    // 判断popover是否完全出现在视口
+    let popoverInView = (top, left) => {
+      // 浏览器滚动条高度
+      let scrollTop = vueCountryTool.scrollTop();
+      top -= scrollTop;
+      let bottom = popover.value.offsetHeight + top;
+      let wh = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight; // 浏览器高度兼容写法
+      // console.log('popoverInView', top, bottom, popover.value.offsetHeight, wh);
+      if (top > 0 && top < wh && bottom > 0 && bottom < wh) { // 完全出现在视口中
+        return true;
+      }else{
+        return false;
       }
-    }
+    };
 
     let show = () => {
       if(props.disabled || props.readonly){
         return;
       }
-      if(tippyIns){
-        tippyIns.show();
-      }
+      nextTick(() => {
+        let containerEl = popoverContainer.value;
+        // 容器位置
+        let popoverContainerOffset = vueCountryTool.offset(containerEl);
+        let popoverContainerHeight = containerEl.offsetHeight;
+
+        let top = 0;
+        let left = popoverContainerOffset.left + props.offset[0];
+        top = (popoverContainerOffset.top + popoverContainerHeight + props.offset[1]);
+
+        console.log('top left', top, left);
+        let isInView = popoverInView(top, left);
+
+        if(isInView){ // 判断popover是否应该出现在参照目标的下方
+          listOnBottom.value = true;
+          console.log(111);
+        }else {
+          // 如果popover在参照物下方不能完全展示，则反转一下
+          let topNew = (popoverContainerOffset.top - popover.value.offsetHeight - props.offset[1]);
+          console.log(222);
+          if(popoverInView(topNew, left)){
+            console.log(333);
+            top = topNew;
+            listOnBottom.value = false;
+          }
+        }
+
+        popoverPosition.top = top + 'px';
+        popoverPosition.left = left + 'px';
+
+        let viewportW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        if(viewportW < 992){
+          popoverMaxWidth.value = `calc(100vw - ${left}px - ${props.rightOffset}px)`;
+        }else{
+          popoverMaxWidth.value = null;
+        }
+        console.log('popoverMaxWidth', popoverMaxWidth.value);
+      });
+
     }
     let hide = () => {
-      if(tippyIns){
-        tippyIns.hide();
-      }
+      ctx.emit('update:visible', false);
     }
+
+
 
     watch(schemaPopoverValue, (newVal) => {
       console.log('watch schemaPopoverValue', newVal, schemaPopoverValue.value);
@@ -200,60 +247,57 @@ export default {
         schemaPopoverValue.value = newVal;
       }
     });
+    watch(() => props.visible, (newVal) => {
+      if(newVal){
+        show();
+      }
+    });
 
+    // 选择的城市改变事件
+    let onCountryChange = (newCountry) => {
+      console.log('onCountryChange执行了')
+      console.log('设置selected', newCountry, newCountry.iso2, selected.item.iso2)
+      if(newCountry.iso2 !== selected.item.iso2){
+        console.log('设置selected111')
+        selected.item = newCountry;
+        ctx.emit('onChange', newCountry);
+        hide();
+      }
+    }
+
+    // 给文档绑定点击事件
+    let documentClickEvt = function (evt){
+      evt = evt || window.event;
+      let target = evt.target;
+      if(vueCountryTool.elementContains(popoverContainer.value, target) || vueCountryTool.elementContains(popover.value, target)){
+        // console.log(2222);
+        return;
+      }
+      hide();
+    };
 
     onMounted(() => {
-      let el = popoverContainer.value;
-      if(props.elId){
-        el = document.querySelector(props.elId) || popoverContainer.value;
-      }
-      tippyIns = tippy(el, {
-        trigger: props.trigger,
-        maxWidth: 'none',
-        allowHTML: true,
-        interactive: true,
-        animation: props.animation,
-        // hideOnClick: true,
-        // arrow: false,
-        placement: props.placement,
-        offset: props.offset,
-        // appendTo: 'parent',
-        content: popoverContent.value,
-        onShow (instance) {
-          vueCountryTool.addClass(instance.popper, 'vue-country-intl_popover_popover');
-          if(props.popoverClass){
-            vueCountryTool.addClass(instance.popper, props.popoverClass);
-          }
-          console.log('instance', instance)
-        }
-      });
-      watch([() => props.disabled, () => props.readonly], ([newDisabled, newReadonly]) => {
-        console.log('newDisabled,newReadonly',newDisabled,newReadonly);
-        if(!newDisabled && !newReadonly){
-          tippyIns.enable();
-        }else{
-          tippyIns.disable();
-        }
-      }, { immediate: true });
-      console.log('tippyIns', tippyIns)
+      vueCountryTool.bindEvent(document.body, 'click', documentClickEvt);
     });
 
     onBeforeUnmount(() => {
-      if(tippyIns){
-        tippyIns.destroy();
-        tippyIns = null;
-      }
+      vueCountryTool.unBindEvent(document.body, 'click', documentClickEvt);
     });
 
     return {
-      id: ref('vue_country_intl-' + (window._vueCountryIntl_count++)),
+      id: ref('vue_country_intl-' + (window._vueCountryIntl_count++ || 2)),
       selected,
       searchText,
       countryListShow,
       listOnBottom,
       schemaPopoverValue,
+
       popoverContainer,
-      popoverContent,
+      popover,
+      popoverVisible,
+      popoverPosition,
+      popoverMaxWidth,
+
       onCountryChange,
       show,
       hide

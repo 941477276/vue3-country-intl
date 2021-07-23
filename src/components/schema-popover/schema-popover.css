@@ -1,30 +1,17 @@
 /*模式为popover的选择器 start*/
-.vue-country-popover-container{
+.vue-country-intl-schema-popover{
     display: inline-block;
+    vertical-align: middle;
 }
-.vue-country-intl_popover_popover{
-    max-width: calc(100% - 30px);
-    border: 1px solid #e8e8e8;
-    filter: drop-shadow(1px 1px 4px #ddd);
-}
-.vue-country-intl_popover_popover .tippy-box{
-    background-color: transparent;
-    border-radius: 0;
-}
-.vue-country-intl_popover_popover .tippy-content{
-    padding: 0;
-}
-.vue-country-intl_popover_popover .tippy-arrow{
-    color: #fff;
-}
-.vue-country-intl-popover-content{
-    /*position: absolute;
+.vue-country-intl-popover{
+    position: absolute;
     width: 440px;
-    z-index: 100;*/
-    /*border: 1px solid #e8e8e8;
-    filter: drop-shadow(2px 2px 8px #ddd);*/
+    z-index: 100;
+    border: 1px solid #e8e8e8;
+    filter: drop-shadow(1px 1px 6px #eee);
+    background-color: #fff;
 }
-/*.vue-country-intl-popover.popover-on-bottom::before{
+.vue-country-intl-popover.popover-on-bottom::before{
     position: absolute;
     top: 0;
     left: 10px;
@@ -51,21 +38,12 @@
     transform: rotate(-135deg);
     background-color: #fff;
 }
-.vue-country-intl-popover.fade-enter-active, .vue-country-intl-popover.fade-leave-active {
-    transition: opacity .3s;
-}
-.vue-country-intl-popover.fade-enter, .vue-country-intl-popover.fade-leave-to {
-    opacity: 0;
-}*/
-.vue-country-intl-popover-content{
-    position: relative;
-    background-color: #fff;
-    pointer-events: auto;
-}
-.vue-country-intl-popover-content .search-input-box{
+
+
+.vue-country-intl-popover .search-input-box{
     padding: 10px 15px;
 }
-.vue-country-intl-popover-content .search-input{
+.vue-country-intl-popover .search-input{
     display: block;
     box-sizing: border-box;
     width: 100%;
@@ -81,18 +59,56 @@
     background-color: #fff;
     appearance:none; /* 去除iPhone输入框阴影 */
 }
-.vue-country-intl-popover-content .search-input:focus{
+.vue-country-intl-popover .search-input:focus{
     border-color: #aaa;
 }
-.vue-country-intl-popover-content .vue-country-list-wrap{
+.vue-country-intl-popover .vue-country-list-wrap{
     border-radius: 0;
     border-left: none;
     border-right: none;
     border-bottom: none;
 }
-/*模式为popover的选择器 end*/
-@media (max-width: 500px) {
-    .vue-country-intl-popover{
-        width: calc(100% - 10px);
-    }
+.vue-country-intl-popover .vue-country-intl-popover-arrow{
+    position: absolute;
+    content: ' ';
+    top: -5px;
+    left: 16px;
+    /*border-style: solid;
+    border-width: 5px;
+    border-color: transparent;
+    border-top-color: #fff;
+    border-right-color: #fff;*/
+    width: 10px;
+    height: 10px;
+    border-top: 1px solid #e8e8e8;
+    border-right: 1px solid #e8e8e8;
+    background-color: #fff;
+    transform: rotate(-45deg);
 }
+.vue-country-intl-popover.list-on-top .vue-country-intl-popover-arrow{
+    top: unset;
+    bottom: -6px;
+    z-index: -1;
+    transform: rotate(135deg);
+}
+/*模式为popover的选择器 end*/
+
+/*动画 start*/
+.vue-country-intl-popover.zoom_in-enter-from{
+    opacity: 0;
+    transform: scale(0.5);
+}
+.vue-country-intl-popover.zoom_in-enter-active,
+.vue-country-intl-popover.zoom_in-leave-active{
+    transition: transform 0.3s, opacity 0.3s;
+}
+.vue-country-intl-popover.zoom_in-enter-to,
+.vue-country-intl-popover.zoom_in-leave-from{
+    opacity: 1;
+    transform: scale(1);
+}
+.vue-country-intl-popover.zoom_in-leave-to{
+    opacity: 0;
+    transform: scale(0.8);
+}
+/*动画 end*/
