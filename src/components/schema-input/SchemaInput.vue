@@ -21,7 +21,7 @@
       <label class="dropdown-flag"></label>
       <div class="prevent-click"></div>
     </div>
-    <transition name="fade_in_up">
+    <transition :name="transitionName">
       <country-list
         ref="countryList"
         v-show="countryListVisible"

@@ -111,6 +111,10 @@ export default {
     static: {
       type: Boolean,
       default: false
+    },
+    transitionName: { // 过度效果名称
+      type: String,
+      default: 'fade_in_up'
     }
   },
   emits: ['update:modelValue', 'onChange'],
