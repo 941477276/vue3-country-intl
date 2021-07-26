@@ -108,8 +108,22 @@
           <div>Default effect (select phone area code)</div>
         </div>
       </h3>
-      <VueCountryIntl schema="popover" popover-class="popover-class1111" v-model="schemaPopoverData.default">
-        <button type="button" slot="reference">选择手机区号</button>
+      <VueCountryIntl schema="popover" popover-class="popover-class1111" v-model="schemaPopoverData.default" v-model:visible="schemaPopoverData.defaultVisible">
+        <button type="button" @click="schemaPopoverData.defaultVisible = true">选择手机区号</button>
+        <template slot="vueCountryNoData"><h1>没有找到该国籍！</h1></template>
+      </VueCountryIntl>
+      <h5 class="mt-5">区号：{{schemaPopoverData.default || '--'}}</h5>
+      <div class="hr"></div>
+
+      <h3 class="mb-10" style="margin-top: 400px;">
+        <div class="pull-left">2、</div>
+        <div class="overflow">
+          <div class="mb-5">测试弹出方位</div>
+          <div>Test the pop-up orientation</div>
+        </div>
+      </h3>
+      <VueCountryIntl schema="popover" popover-class="popover-class1111" v-model="schemaPopoverData.default" v-model:visible="schemaPopoverData.defaultVisible2">
+        <button type="button" @click="schemaPopoverData.defaultVisible2 = true">选择手机区号</button>
         <template slot="vueCountryNoData"><h1>没有找到该国籍！</h1></template>
       </VueCountryIntl>
       <h5 class="mt-5">区号：{{schemaPopoverData.default || '--'}}</h5>
@@ -136,8 +150,9 @@
 
 <script>
 import { ref, reactive, onMounted } from 'vue';
-import VueCountryIntl from './components/index.vue';
-// import VueCountryIntl from '../dist/vue3CountryIntl.js';
+import VueCountryIntl from './components/Vue3CountryIntl.vue';
+/*import VueCountryIntl from '../lib/vue3-country-intl.es';
+import '../lib/vue3-country-intl.css';*/
 
 console.log(VueCountryIntl)
 export default {
@@ -157,7 +172,9 @@ export default {
       selected: {}
     });
     let schemaPopoverData = reactive({
-      default: ''
+      default: '',
+      defaultVisible: false,
+      defaultVisible2: false
     });
     let schemaModalVisible = reactive({
       default: false
@@ -211,11 +228,16 @@ html {overflow-y: scroll;}
 .mb-5{
   margin-bottom: 5px;
 }
-
+body{
+  /*padding-top: 0!important;
+  height: 100% !important;*/
+}
 html,body,.demo-doc-page,.app{
   height: 100%;
 }
-
+/*.app{
+  overflow: auto;
+}*/
 h1{
   margin-bottom: 20px;
   font-size: 2.2em;

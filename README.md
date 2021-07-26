@@ -11,7 +11,7 @@ input、popover、modal）
 
 
 ## 同门师兄弟
->vue版的国籍/手机区号选择插件(`vue-country-intl`)
+>vue2.0版的国籍/手机区号选择插件(`vue-country-intl`)
 + [vue-country-intl](https://github.com/941477276/vue-country-intl)
 >react版的国籍/手机区号选择插件(`reaxt-country-intl`)
 + [react-country-intl](https://github.com/941477276/react-country-intl)
@@ -29,7 +29,7 @@ input、popover、modal）
 /*****main.js****/
 import Vue3CountryIntl from 'vue3-country-intl';
 // 引入css
-import 'vue3-country-intl/lib/vue3CountryIntl.css'
+import 'vue3-country-intl/lib/vue3-country-intl.css'
 // 全局注册组件
 Vue.component(Vue3CountryIntl.name, Vue3CountryIntl);
 
@@ -41,7 +41,7 @@ Vue.component(Vue3CountryIntl.name, Vue3CountryIntl);
 
 ## 使用——直接引入js文件
 ```
-<link rel="stylesheet" href="./lib/vue3CountryIntl.css">
+<link rel="stylesheet" href="./lib/vue3-country-intl.css">
 <script src="./lib/vue3-country-intl.min.js"></script>
 <script>
   Vue.component('vue3-country-intl', vue3CountryIntl);
@@ -68,15 +68,23 @@ Vue.component(Vue3CountryIntl.name, Vue3CountryIntl);
 ## schema=popover(popover弹窗式)
 ```
 <template>
-    <button type="button" id="my_reference">选择手机区号</button>
-    <Vue3CountryIntl schema="popover" elId="my_reference" v-model="schemaPopoverData.default">
+    <Vue3CountryIntl
+        schema="popover"
+        elId="my_reference"
+        v-model="schemaPopoverData.default"
+        v-model:visible="schemaPopoverData.visible">
+    <button type="button" @click="schemaPopoverData.visible = true">选择手机区号</button>
     </Vue3CountryIntl>
 </template>    
 ```
 ```
 <template>
-    <Vue3CountryIntl schema="popover" popover-class="popover-class1111" v-model="schemaPopoverData.default">
-        <button type="button" slot="reference">选择手机区号</button>
+    <Vue3CountryIntl
+        schema="popover"
+        popover-class="popover-class1111"
+        v-model="schemaPopoverData.default"
+        v-model:visible="schemaPopoverData.visible">
+        <button type="button" @click="schemaPopoverData.visible = true">选择手机区号</button>
         <template slot="vueCountryNoData"><h1>没有找到该国籍！</h1></template>
     </Vue3CountryIntl>
 </template>    
@@ -138,36 +146,31 @@ Vue.component(Vue3CountryIntl.name, Vue3CountryIntl);
 
 15.`popoverClass`: popover弹窗额外class。只有在`schema=popover`时有效（数据类型：String）
 
-16.`referenceTrigger`: 点击reference是否可以显示popover弹窗，默认为true。只有在`schema=popover`时有效（数据类型：Boolean）
+16.`searchInputPlaceholder`: 搜索输入框的placeholder文字，只有在schema=popover、schema=modal中有效（数据类型：String）
 
-17.`searchInputPlaceholder`: 搜索输入框的placeholder文字，只有在schema=popover、schema=modal中有效（数据类型：String）
+17.`modalClass`: model弹窗额外class。只有在`schema=modal`时有效（数据类型：String）
 
-18.`elId`: 触发popover弹窗显示的元素的id，（只在`schema=popover`模式下有效）（数据类型：String）
+18: `visible`: 控制组件显示与隐藏，只在`schema=modal`、`schema=popover`模式下有效（数据类型：Boolean）
 
-19.`modalClass`: model弹窗额外class。只有在`schema=modal`时有效（数据类型：String）
+19: `cancelText`: 关闭弹窗的按钮的文字，默认: '取消'，只在schema=modal模式下有效（数据类型：String）
 
-20: `visible`: 控制组件显示与隐藏，需使用`sync`语法，如:`:visible.sync="show"`，只在schema=modal模式下有效（数据类型：Boolean）
+20: `disableCountry`: 禁用的国家(可以传递国家名称、国家代码、国家区号)，可以传递字符串也可以传递数组，传递字符串时禁用多个国家使用逗号分隔（数据类型：String|Array）
 
-21: `cancelText`: 关闭弹窗的按钮的文字，默认: '取消'，只在schema=modal模式下有效（数据类型：String）
+21: `onlyCountry`: 只显示指定的国家，可以传递字符串也可以传递数组，传递字符串时多个国家使用逗号分隔（数据类型：String|Array）
 
-22: `disableCountry`: 禁用的国家(可以传递国家名称、国家代码、国家区号)，可以传递字符串也可以传递数组，传递字符串时禁用多个国家使用逗号分隔（数据类型：String|Array）
+22: `noDataText`: 未搜索到国家数据时显示的文案，如有`vueCountryNoData`slot则优先显示slot内容（数据类型：String）
 
-23: `onlyCountry`: 只显示指定的国家，可以传递字符串也可以传递数组，传递字符串时多个国家使用逗号分隔（数据类型：String|Array）
+23: `iosMobileReadonly`: ios移动终端输入框是否只读(只在`schema=input`模式下有效)，默认为true，因为在ios手机终端中如不是只读模式会弹出选择下来框出来（数据类型：Boolean）
 
-24: `noDataText`: 未搜索到国家数据时显示的文案，如有`vueCountryNoData`slot则优先显示slot内容（数据类型：String）
+24: `useChinese`: 是否以中文显示国籍名称，默认为`true`（数据类型：Boolean）
 
-25: `iosMobileReadonly`: ios移动终端输入框是否只读(只在`schema=input`模式下有效)，默认为true，因为在ios手机终端中如不是只读模式会弹出选择下来框出来（数据类型：Boolean）
+25: `static`: 是否使用static布局（静态布局）(只在`schema=input`模式下有效)，默认为`false`（数据类型：Boolean）
 
-26: `useChinese`: 是否以中文显示国籍名称，默认为`true`（数据类型：Boolean）
+26: `transitionName`：过渡名称，可以自定义实现组件显示/隐藏时的过渡效果。默认为`''`（数据类型：string）
 
-27: `animation`: tippy.js 的动画名称，默认为`shift-toward`（数据类型：String）
+26: `offset`：popover弹窗距离点击区域的距离(只在`schema=popover`模式下有效)。默认为：`[0, 10]`（数据类型：Array）
 
-28: `static`: 是否使用static布局（静态布局）(只在`schema=input`模式下有效)，默认为`false`（数据类型：Boolean）
-
-29: `placement`: tippy.js 的 placement，默认为`top-start`（数据类型：String）
-
-30: `offset`: tippy.js 的 offset，默认为`[0, 10]`（数据类型：Array）
-
+27： `rightOffset`：popover弹窗距离浏览器右侧距离，该值只有在小屏下有效(只在`schema=popover`模式下有效)。默认为：`20`（数据类型：Number）
 
 ## 可用方法(method)
 1.`show`: 显示列表

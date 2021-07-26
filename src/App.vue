@@ -1,12 +1,12 @@
 <template>
 <!--  <CountryList type="phone" value="+86"></CountryList>-->
   <!--<SchemaInput ref="schemaInput" type="phone" v-model="schemaInputVal" :readonly="disabled" :static="false"></SchemaInput>-->
- <!-- <SchemaPopover type="phone" v-model="schemaInputVal" v-model:visible="popoverVisible" :readonly="disabled">
+  <!--<SchemaPopover type="phone" v-model="schemaInputVal" v-model:visible="popoverVisible" :readonly="disabled">
     <button type="button" slot="reference" @click="popoverVisible = true">显示</button>
   </SchemaPopover>-->
 
-  <SchemaModal v-model="schemaInputVal" v-model:visible="visible"></SchemaModal>
-  <button type="button" @click="show">显示</button>
+  <!--<SchemaModal v-model="schemaInputVal" v-model:visible="visible"></SchemaModal>
+  <button type="button" @click="show">显示</button>-->
 
 <!--  <VueCountryIntl ref="schemaInput" schema="input"  type="phone" v-model="schemaInputVal"></VueCountryIntl>
   <VueCountryIntl ref="schemaPopover" schema="popover"  type="phone" v-model="schemaInputVal">
@@ -19,16 +19,24 @@
   <button type="button" @click="show">显示</button>
   <VueCountryIntl schema="modal"  type="phone" v-model:visible="visible" v-model="schemaInputVal"></VueCountryIntl>-->
 
-  <!--<DemoDoc></DemoDoc>-->
+  <DemoDoc></DemoDoc>
+
+ <!-- <div style="width: 400px;margin: 50px auto;">
+    <Vue3CountryIntl schema="popover" type="phone" :use-chinese="false" v-model="schemaInputVal" v-model:visible="popoverVisible">
+      <button type="button" slot="reference" @click="popoverVisible = true">显示</button>
+    </Vue3CountryIntl>
+  </div>-->
+
 </template>
 
 <script setup>
 /*import HelloWorld from './components/HelloWorld.vue'*/
-import CountryList from './components/country-list/CountryList.vue';
+/*import CountryList from './components/country-list/CountryList.vue';
 import SchemaInput from './components/schema-input/SchemaInput.vue';
 import SchemaPopover from './components/schema-popover/SchemaPopover.vue';
 import SchemaModal from './components/schema-modal/SchemaModal.vue';
-import VueCountryIntl from './components/index.vue';
+import VueCountryIntl from './components/index.vue';*/
+// import Vue3CountryIntl from './components/Vue3CountryIntl.vue';
 import DemoDoc from './DemoDoc.vue';
 import {ref, onMounted} from 'vue';
 
@@ -41,10 +49,10 @@ let schemaInputVal = ref('+86');
 let visible = ref(false);
 let popoverVisible = ref(false);
 
-let show = () => {
-  console.log(111)
-  visible.value = true;
-}
+// let show = () => {
+//   console.log(111)
+//   visible.value = true;
+// }
 
 /*
 setTimeout(() => {
@@ -76,12 +84,47 @@ setTimeout(() => {
 }, 1500);*/
 </script>
 
+<!--<script>
+
+
+
+export default {
+  name: 'App',
+  /*components: {
+    Vue3CountryIntl
+  },*/
+  setup(props, ctx){
+    let disabled = ref(false);
+    let schemaInput = ref(null);
+    let schemaPopover = ref(null);
+    let schemaInputVal = ref('+86');
+    let visible = ref(false);
+    let popoverVisible = ref(false);
+
+    let show = () => {
+      console.log(111)
+      visible.value = true;
+    }
+    return {
+      disabled,
+      schemaInput,
+      schemaPopover,
+      schemaInputVal,
+      visible,
+      popoverVisible,
+      show
+    }
+  }
+}
+</script>-->
+
 <style scoped>
 
 </style>
 <style>
 body{
-  padding: 700px 50px 50px 50px;
-  height: 2000px;
+  padding: 0 50px;
+  /*padding: 700px 50px 50px 50px;
+  height: 2000px;*/
 }
 </style>
