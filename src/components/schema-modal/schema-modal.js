@@ -1,4 +1,4 @@
-import { reactive, ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { reactive, ref, watch, onBeforeUnmount } from 'vue';
 import CountryList from '../country-list/CountryList.vue';
 // import {vueCountryTool} from "../vueCountryTool";
 export default {
@@ -101,6 +101,10 @@ export default {
     useChinese: {
       type: Boolean,
       default: false
+    },
+    transitionName: { // 过度效果名称
+      type: String,
+      default: 'fade'
     }
   },
   emits: ['update:modelValue', 'onChange', 'update:visible'],
@@ -177,25 +181,12 @@ export default {
       }else {
         hide();
       }
+    }, {
+      immediate: true
     });
 
-    onMounted(() => {
-      try {
-        document.body.appendChild(intlModal.value);
-      } catch (e) {
-        console.log(e);
-      }
-      if (props.visible) {
-        show();
-      }
-    });
     onBeforeUnmount(() => {
       hide();
-      try {
-        document.body.removeChild(intlModal.value);
-      } catch (e) {
-        console.log(e);
-      }
     });
 
     return {

@@ -1,12 +1,12 @@
 <template>
 <!--  <CountryList type="phone" value="+86"></CountryList>-->
   <!--<SchemaInput ref="schemaInput" type="phone" v-model="schemaInputVal" :readonly="disabled" :static="false"></SchemaInput>-->
-  <SchemaPopover type="phone" v-model="schemaInputVal" v-model:visible="popoverVisible" :readonly="disabled">
+ <!-- <SchemaPopover type="phone" v-model="schemaInputVal" v-model:visible="popoverVisible" :readonly="disabled">
     <button type="button" slot="reference" @click="popoverVisible = true">显示</button>
-  </SchemaPopover>
+  </SchemaPopover>-->
 
-<!--  <SchemaModal v-model="schemaInputVal" v-model:visible="visible"></SchemaModal>
-  <button type="button" @click="show">显示</button>-->
+  <SchemaModal v-model="schemaInputVal" v-model:visible="visible"></SchemaModal>
+  <button type="button" @click="show">显示</button>
 
 <!--  <VueCountryIntl ref="schemaInput" schema="input"  type="phone" v-model="schemaInputVal"></VueCountryIntl>
   <VueCountryIntl ref="schemaPopover" schema="popover"  type="phone" v-model="schemaInputVal">
