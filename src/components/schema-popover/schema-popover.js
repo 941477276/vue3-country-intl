@@ -81,7 +81,7 @@ export default {
       type: String,
       default: '输入国家名称、区号搜索'
     },
-    // 触发方式，tippy支持的触发方式
+    /*// 触发方式，tippy支持的触发方式
     trigger: {
       type: String,
       default: 'click',
@@ -90,7 +90,7 @@ export default {
     referenceTrigger: {
       type: Boolean,
       default: true,
-    },
+    },*/
     // popover弹窗距离参照元素的距离。
     /*offsetTop: {
       type: Number,
@@ -101,10 +101,10 @@ export default {
       type: String,
       default: '',
     },
-    elId: {
+    /*elId: {
       type: String,
       default: ''
-    },
+    },*/
     /* 禁用的国家(可以传递国家名称、国家代码、国家区号)，可以传递字符串也可以传递数组，传递字符串时禁用多个国家使用逗号分隔 */
     disableCountry: {
       type: [String, Array],
@@ -172,10 +172,11 @@ export default {
     let popoverInView = (top, left) => {
       // 浏览器滚动条高度
       let scrollTop = vueCountryTool.scrollTop();
+      console.log('scrollTop', scrollTop);
       top -= scrollTop;
       let bottom = popover.value.offsetHeight + top;
       let wh = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight; // 浏览器高度兼容写法
-      // console.log('popoverInView', top, bottom, popover.value.offsetHeight, wh);
+      console.log('popoverInView', top, bottom, popover.value.offsetHeight, wh);
       if (top > 0 && top < wh && bottom > 0 && bottom < wh) { // 完全出现在视口中
         return true;
       }else{
@@ -206,11 +207,13 @@ export default {
         }else {
           // 如果popover在参照物下方不能完全展示，则反转一下
           let topNew = (popoverContainerOffset.top - popover.value.offsetHeight - props.offset[1]);
-          console.log(222);
+          console.log(222, topNew);
           if(popoverInView(topNew, left)){
             console.log(333);
             top = topNew;
             listOnBottom.value = false;
+          }else {
+            listOnBottom.value = true;
           }
         }
 
@@ -270,7 +273,6 @@ export default {
       evt = evt || window.event;
       let target = evt.target;
       if(vueCountryTool.elementContains(popoverContainer.value, target) || vueCountryTool.elementContains(popover.value, target)){
-        // console.log(2222);
         return;
       }
       hide();
