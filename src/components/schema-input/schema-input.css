@@ -44,6 +44,7 @@
 .vue-country-intl-input .vue-country-list-wrap{
     position: absolute;
     top: 100%;
+    z-index: 999;
 }
 .vue-country-intl-input.static .vue-country-list-wrap{
     position: static;

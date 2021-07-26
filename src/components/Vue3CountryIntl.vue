@@ -15,6 +15,7 @@
     v-else-if="schema === 'popover'"
     v-bind="$props"
     v-model="countryIntlValue"
+    v-model:visible="modalVisible"
     @onChange="onChange">
     <slot></slot>
     <template slot="vueCountryNoData">
@@ -37,7 +38,7 @@
 
 
 <script>
-import index from './index.js';
+import index from './vue3-country-intl';
 export default index;
 </script>
 

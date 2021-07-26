@@ -25,7 +25,10 @@ const vueCountryTool = {
    * @param childEle 子元素
    * @returns {Boolean}
    */
-  elementContains(ele, childEle) {
+  elementContains (ele, childEle) {
+    if(!ele || !childEle){
+      return false;
+    }
     if (ele === childEle) {
       return false;
     }
@@ -46,7 +49,7 @@ const vueCountryTool = {
     }
   },
   // 绑定事件
-  bindEvent(el, eventName, fn) {
+  bindEvent (el, eventName, fn) {
     if (document.addEventListener) {
       el.addEventListener(eventName, fn, false);
       el.addEventListener(eventName, fn, false);
@@ -56,7 +59,7 @@ const vueCountryTool = {
     }
   },
   // 解绑事件
-  unBindEvent(el, eventName, fn) {
+  unBindEvent (el, eventName, fn) {
     if (!el) {
       return;
     }
@@ -68,7 +71,7 @@ const vueCountryTool = {
       el.detachEvent('on' + eventName, fn);
     }
   },
-  getElementRect(element) {
+  getElementRect (element) {
     var rect = element.getBoundingClientRect(); // 距离视窗的距离
     // html元素对象的上边框的宽度
     var top = document.documentElement.clientTop ? document.documentElement.clientTop : 0;
@@ -122,7 +125,7 @@ const vueCountryTool = {
    * @param arr 数组
    * @param fn 一个函数，如果函数返回true，则返回该项的下标，如果没有找到则返回-1
    */
-  getIndex(arr, fn) {
+  getIndex (arr, fn) {
     if (!arr || arr.length == 0 || !fn || (typeof fn != "function")) {
       return -1;
     }
@@ -178,26 +181,87 @@ const vueCountryTool = {
    * @param ele dom元素
    * @returns {boolean}
    */
-  eleIsIntoView(ele){
+  eleIsIntoView (ele) {
+    // 浏览器滚动条的高度
     let scrollTop = vueCountryTool.scrollTop();
-    let rect = vueCountryTool.getElementRect(ele);
+    // 元素有滚动条的父级元素的滚动条高度
+    let eleWrapperScrollTop = 0;
+    let scrollParent = vueCountryTool.getScrollParent(ele);
+    console.log('getScrollParent', vueCountryTool.getScrollParent(ele).nodeName);
+    // 如果当前元素有滚动条的父级元素不是html，则获取有滚动条的父级元素的滚动条的位置
+    if(scrollParent && scrollParent.nodeName != 'HTML'){
+      eleWrapperScrollTop = vueCountryTool.scrollTop(ele);
+    }
+    // 获取元素距离浏览器最顶端的距离
+    let offset = vueCountryTool.offset(ele);
     let wh = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight; // 浏览器高度兼容写法
-    let top = rect.top - scrollTop;
-    let bottom = rect.bottom - scrollTop;
-
+    let top = offset.top - scrollTop - eleWrapperScrollTop;
+    let bottom = (top + ele.offsetHeight);
+    console.log('offset', offset);
+    console.log('top,bottom,scrollTop, wh', top, bottom, scrollTop, wh);
     if (top > 0 && top < wh && bottom > 0 && bottom < wh) { // 完全出现在视口中
       return true;
-    }else{
+    } else {
       return false;
     }
   },
   /**
-   * 获取浏览器滚动条的位置
-   * @returns {number|number}
+   * 获取元素最近的有滚动条的父级元素的滚动条位置/浏览器滚动条的位置
+   * @param ele dom元素
+   * @returns {number}
    */
-  scrollTop () {
-  return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-}
+  scrollTop (ele) {
+    if (ele) {
+      var eleParent = ele.parentElement;
+      var scrollTop = ele.scrollTop || 0;
+      while (eleParent != null) {
+        if (vueCountryTool.eleHasScroll(eleParent)) {
+          return eleParent.scrollTop;
+        }
+        // scrollTop = eleParent.scrollTop;
+        eleParent = eleParent.parentElement;
+      }
+
+      return scrollTop;
+    }
+    return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  },
+  /**
+   * 判断元素是否有滚动条
+   * @param ele dom元素
+   * @returns {boolean}
+   */
+  eleHasScroll (ele) {
+    if (!ele instanceof HTMLElement) {
+      return false;
+    }
+    if (ele.scrollTop > 0) {
+      return true;
+    } else {
+      ele.scrollTop++;
+      // 元素不能滚动的话，scrollTop 设置不会生效，还会置为 0
+      const top = ele.scrollTop;
+      // 重置滚动位置
+      top && (ele.scrollTop = 0);
+      return top > 0;
+    }
+  },
+  /**
+   * 获取元素有滚动条的父级元素
+   * @param ele
+   */
+  getScrollParent(ele){
+    if(!ele){
+      return;
+    }
+    var eleParent = ele.parentElement;
+    while (eleParent != null) {
+      if (vueCountryTool.eleHasScroll(eleParent)) {
+        return eleParent;
+      }
+      eleParent = eleParent.parentElement;
+    }
+  }
 };
 
-export {vueCountryTool};
+export { vueCountryTool };

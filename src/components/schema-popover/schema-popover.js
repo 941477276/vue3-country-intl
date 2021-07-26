@@ -173,7 +173,7 @@ export default {
       // 浏览器滚动条高度
       let scrollTop = vueCountryTool.scrollTop();
       console.log('scrollTop', scrollTop);
-      top -= scrollTop;
+      top = top - scrollTop;
       let bottom = popover.value.offsetHeight + top;
       let wh = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight; // 浏览器高度兼容写法
       console.log('popoverInView', top, bottom, popover.value.offsetHeight, wh);
@@ -190,14 +190,24 @@ export default {
       }
       nextTick(() => {
         let containerEl = popoverContainer.value;
-        // 容器位置
+        // 参照物距浏览器顶部的距离
         let popoverContainerOffset = vueCountryTool.offset(containerEl);
         let popoverContainerHeight = containerEl.offsetHeight;
+        let scrollParent = vueCountryTool.getScrollParent(containerEl);
+        // 参照物有滚动条的父级容器滚动条的位置
+        let eleWrapperScrollTop = 0;
+        // 浏览器滚动条的位置
+        let scrollTop = vueCountryTool.scrollTop();
+        if(scrollParent && scrollParent.nodeName != 'HTML'){
+          eleWrapperScrollTop = eleWrapperScrollTop = vueCountryTool.scrollTop(containerEl);
+        }
 
         let top = 0;
         let left = popoverContainerOffset.left + props.offset[0];
-        top = (popoverContainerOffset.top + popoverContainerHeight + props.offset[1]);
-
+        top = (popoverContainerOffset.top + popoverContainerHeight + props.offset[1] - eleWrapperScrollTop);
+        console.log('popoverContainerOffset', popoverContainerOffset);
+        console.log('eleWrapperScrollTop', eleWrapperScrollTop);
+        console.log('eleWrapperScrollTop', eleWrapperScrollTop);
         console.log('top left', top, left);
         let isInView = popoverInView(top, left);
 
@@ -206,7 +216,7 @@ export default {
           console.log(111);
         }else {
           // 如果popover在参照物下方不能完全展示，则反转一下
-          let topNew = (popoverContainerOffset.top - popover.value.offsetHeight - props.offset[1]);
+          let topNew = (popoverContainerOffset.top - popover.value.offsetHeight - props.offset[1] - eleWrapperScrollTop);
           console.log(222, topNew);
           if(popoverInView(topNew, left)){
             console.log(333);
@@ -231,6 +241,7 @@ export default {
 
     }
     let hide = () => {
+      console.log('hide fun');
       ctx.emit('update:visible', false);
     }
 
@@ -272,7 +283,9 @@ export default {
     let documentClickEvt = function (evt){
       evt = evt || window.event;
       let target = evt.target;
+      console.log('document.body click');
       if(vueCountryTool.elementContains(popoverContainer.value, target) || vueCountryTool.elementContains(popover.value, target)){
+        console.log('阻止了');
         return;
       }
       hide();
@@ -282,9 +295,9 @@ export default {
       vueCountryTool.bindEvent(document.body, 'click', documentClickEvt);
     });
 
-    onBeforeUnmount(() => {
+    /*onBeforeUnmount(() => {
       vueCountryTool.unBindEvent(document.body, 'click', documentClickEvt);
-    });
+    });*/
 
     return {
       id: ref('vue_country_intl-' + (window._vueCountryIntl_count++ || 2)),

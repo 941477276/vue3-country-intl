@@ -105,16 +105,6 @@ export default {
       type: String,
       default: '输入国家名称、区号搜索'
     },
-    // 触发方式，只有在schema=popover时有效。目前功能还未实现
-    trigger: {
-      type: String,
-      default: 'click',
-    },
-    // 点击reference是否可以显示popover弹窗
-    referenceTrigger: {
-      type: Boolean,
-      default: true,
-    },
     // popover弹窗距离参照元素的距离。只有在schema=popover时有效
     offsetTop: {
       type: Number,
@@ -124,11 +114,6 @@ export default {
     popoverClass: {
       type: String,
       default: '',
-    },
-    // 触发popover弹出的元素。只有在schema=popover时有效
-    elId: {
-      type: String,
-      default: ''
     },
     // modal弹出显示。只有在schema=modal时有效
     visible: {
@@ -173,20 +158,26 @@ export default {
       type: Boolean,
       default: false
     },
-    // tippy.js 的动画名称
-    animation: {
-      type: String,
-      default: 'shift-toward'
-    },
     // 是否使用static布局
     static: {
       type: Boolean,
       default: false
     },
-    // tippy 的placement
-    placement: {
-      type: String,
-      default: 'top-start'
+    // popover弹窗距离点击区域的距离，只有在schema=popover时有效
+    offset: {
+      type: Array,
+      default(){
+        return [0, 10]
+      }
+    },
+    // popover弹窗距离浏览器右侧距离，该值只有在小屏下有效，只有在schema=popover时有效
+    rightOffset: {
+      type: Number,
+      default: 20
+    },
+    transitionName: { // 过度效果名称
+      type: [String, undefined],
+      default: undefined
     }
   },
   emits: ['update:modelValue', 'update:visible', 'onChange'],
@@ -214,7 +205,8 @@ export default {
         countryIntlValue.value = newVal;
       }
     });
-    if(props.schema == 'modal'){
+
+    if(props.schema == 'modal' || props.schema == 'popover'){
       watch(() => props.visible, (newVal) => {
         if(newVal != modalVisible.value){
           modalVisible.value = newVal;
