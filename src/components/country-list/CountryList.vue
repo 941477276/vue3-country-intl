@@ -10,7 +10,9 @@
           :data-iso="item.iso2">
         <span class="iti-flag" :class="item.iso2"></span>
         <span class="vue-country-name">{{useChinese ? item.nameCN : item.name}}</span>
-        <span class="vue-country-areaCode" v-show="showAreaCode">+{{item.dialCode}}</span>
+        <span class="vue-country-areaCode" v-show="showAreaCode">
+            +{{areaCodeView(item.dialCode, item)}}
+        </span>
         <span class="selected-text" v-show="showSelectedText">{{selectedText}}</span>
       </li>
       <li class="vue-country-no-data" v-show="countryList.length === 0">
@@ -150,9 +152,21 @@ export default {
         let reg = new RegExp(searchText, 'gi');
         // console.log('reg',reg);
         let nameFlag = reg.test(item.name || item.nameCN);
+        if(nameFlag){
+          return true;
+        }
         let dialCodeFlag = reg.test(item.dialCode);
+        if(dialCodeFlag){
+          return true;
+        }
         let iso2Flag = reg.test(item.iso2);
-        return nameFlag || dialCodeFlag || iso2Flag;
+        if(iso2Flag){
+          return true;
+        }
+        // 有些国家的手机区号会有多个值
+        let diaCodeInMultipleAreaCodeCountry = item.areaCodes && item.areaCodes.some(areaCode => searchText.search(areaCode) > -1);
+        return diaCodeInMultipleAreaCodeCountry;
+
       });
       return countries;
     });
@@ -193,10 +207,21 @@ export default {
       }*/
       selected.item = selectedInner;
       let isPhone = props.type.toLowerCase() === 'phone';
+      let result = '';
+      if(isPhone){
+        // 一个国家有多个手机区号
+        if(selected.dialCode == 1 && selected.areaCodes) {
+          result = selected.areaCodes[0];
+        }else {
+          result = selected.dialCode || '';
+        }
+      }else{
+        result = selected.iso2 || '';
+      }
       // 实现自定义v-model第二步
-      context.emit('update:modelValue', isPhone ? (selectedInner.dialCode || '') : (selectedInner.iso2 || ''));
+      context.emit('update:modelValue', result);
       // 执行回调
-      context.emit('onChange', selectedInner, isPhone ? (selectedInner.dialCode || '') : (selectedInner.iso2 || ''));
+      context.emit('onChange', selectedInner, result);
     }
 
     // 计算默认选中的值
@@ -216,7 +241,15 @@ export default {
             // console.log('iso2', this.iso2, item.iso2);
             return item.iso2 == this.iso2;
           }
-          return item.dialCode == value;
+          // 一个国家只有一个手机区号的情况
+          if(item.dialCode == value){
+            return true;
+          }
+
+          // 一个国家有多个手机区号的情况
+          if(item.dialCode == 1 && item.areaCodes){
+            return item.areaCodes.some(areaCode => areaCode == value);
+          }
         } else {
           return item.iso2 == value;
         }
@@ -229,6 +262,15 @@ export default {
       return item;
     }
 
+    let areaCodeView = (dialCode, country) => {
+      // 有些国家的手机区号会有多个值
+      if(dialCode == 1 && country.areaCodes){
+        let otherEnableCodes = country.areaCodes.slice(0, 5);
+        return (country.areaCodes[0] + ` [${otherEnableCodes.join(', ')}]`);
+      }
+      return dialCode;
+    }
+
     watch(() => props.modelValue, () => {
       let cur = calcSelectedOption();
       console.log('执行watch了');
@@ -237,7 +279,19 @@ export default {
       }
       if(cur !== selected.item){
         selected.item = cur;
-        context.emit('onChange', cur, props.type.toLowerCase() === 'phone' ? (cur.dialCode || '') : (cur.iso2 || ''));
+        let isPhone = props.type.toLowerCase() === 'phone';
+        let result = '';
+        if(isPhone){
+          // 一个国家有多个手机区号
+          if(cur.dialCode == 1 && cur.areaCodes) {
+            result = cur.areaCodes[0];
+          }else {
+            result = cur.dialCode || '';
+          }
+        }else{
+          result = cur.iso2 || '';
+        }
+        context.emit('onChange', cur, result);
       }
     }, { immediate: true });
 
@@ -250,6 +304,7 @@ export default {
     return {
       selected,
       countryList,
+      areaCodeView,
       countryItemClickEvt
     };
   }

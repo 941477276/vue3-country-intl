@@ -15,6 +15,7 @@
       </VueCountryIntl>
       <h5 class="mt-5">区号代码：{{schemaInputData.default || '--'}}</h5>
       <div class="hr"></div>
+      <!--
 
       <h3 class="mb-10">
         <div class="pull-left">1-2、</div>
@@ -26,7 +27,7 @@
       <VueCountryIntl v-model="schemaInputData.default" :use-chinese="true">
         <template slot="vueCountryNoData"><h1>没有找到该国籍！</h1></template>
       </VueCountryIntl>
-      <h5 class="mt-5">区号代码：{{schemaInputData.default || '--'}}</h5>
+      <h5 class="mt-5">区号代码：{{schemaInputData.default || '&#45;&#45;'}}</h5>
       <div class="hr"></div>
 
       <h3 class="mb-10">
@@ -37,7 +38,7 @@
         </div>
       </h3>
       <VueCountryIntl type="country" v-model="schemaInputData.country" no-data-text="没有找到相关数据"></VueCountryIntl>
-      <h5 class="mt-5">国籍代码：{{schemaInputData.country || '--'}}</h5>
+      <h5 class="mt-5">国籍代码：{{schemaInputData.country || '&#45;&#45;'}}</h5>
       <div class="hr"></div>
 
       <h3 class="mb-10">
@@ -48,7 +49,7 @@
         </div>
       </h3>
       <VueCountryIntl v-model="schemaInputData.disableUse" :disabled="true"></VueCountryIntl>
-      <h5 class="mt-5">区号：{{schemaInputData.disableUse || '--'}}</h5>
+      <h5 class="mt-5">区号：{{schemaInputData.disableUse || '&#45;&#45;'}}</h5>
       <div class="hr"></div>
 
       <h3 class="mb-10">
@@ -59,7 +60,7 @@
         </div>
       </h3>
       <VueCountryIntl v-model="schemaInputData.noImage" :show-label-img="false"></VueCountryIntl>
-      <h5 class="mt-5">区号：{{schemaInputData.noImage || '--'}}</h5>
+      <h5 class="mt-5">区号：{{schemaInputData.noImage || '&#45;&#45;'}}</h5>
       <div class="hr"></div>
 
       <h3 class="mb-10">
@@ -70,7 +71,7 @@
         </div>
       </h3>
       <VueCountryIntl v-model="schemaInputData.staticLayout" :static="true"></VueCountryIntl>
-      <h5 class="mt-5">区号：{{schemaInputData.staticLayout || '--'}}</h5>
+      <h5 class="mt-5">区号：{{schemaInputData.staticLayout || '&#45;&#45;'}}</h5>
       <div class="hr"></div>
 
       <h3 class="mb-10">
@@ -82,7 +83,7 @@
       </h3>
       <p class="mb-5">禁用：中国、美国、日本，中国香港(Disabled: China, USA, Japan, Hong Kong China)</p>
       <VueCountryIntl v-model="schemaInputData.disableCountry" disable-country="+86,United States,Japan (日本),hk"></VueCountryIntl>
-      <h5 class="mt-5">区号：{{schemaInputData.disableCountry || '--'}}</h5>
+      <h5 class="mt-5">区号：{{schemaInputData.disableCountry || '&#45;&#45;'}}</h5>
       <div class="hr"></div>
 
       <h3 class="mb-10">
@@ -94,11 +95,12 @@
       </h3>
       <p class="mb-5">只显示：中国、美国、日本，中国香港(Disabled: China, USA, Japan, Hong Kong China)</p>
       <VueCountryIntl v-model="schemaInputData.onlyCountry" only-country="+86,United States,Japan (日本),hk"></VueCountryIntl>
-      <h5 class="mt-5">区号：{{schemaInputData.onlyCountry || '--'}}</h5>
+      <h5 class="mt-5">区号：{{schemaInputData.onlyCountry || '&#45;&#45;'}}</h5>
       <div class="hr"></div>
+      -->
 
     </div>
-    <div class="center">
+    <!--<div class="center">
       <h1>2、模式(model)：scheme = popover</h1>
 
       <h3 class="mb-10">
@@ -112,7 +114,7 @@
         <button type="button" @click="schemaPopoverData.defaultVisible = true">选择手机区号</button>
         <template slot="vueCountryNoData"><h1>没有找到该国籍！</h1></template>
       </VueCountryIntl>
-      <h5 class="mt-5">区号：{{schemaPopoverData.default || '--'}}</h5>
+      <h5 class="mt-5">区号：{{schemaPopoverData.default || '&#45;&#45;'}}</h5>
       <div class="hr"></div>
 
       <h3 class="mb-10" style="margin-top: 400px;">
@@ -126,11 +128,11 @@
         <button type="button" @click="schemaPopoverData.defaultVisible2 = true">选择手机区号</button>
         <template slot="vueCountryNoData"><h1>没有找到该国籍！</h1></template>
       </VueCountryIntl>
-      <h5 class="mt-5">区号：{{schemaPopoverData.default || '--'}}</h5>
+      <h5 class="mt-5">区号：{{schemaPopoverData.default || '&#45;&#45;'}}</h5>
       <div class="hr"></div>
 
-    </div>
-    <div class="right">
+    </div>-->
+    <!--<div class="right">
       <h1>scheme = modal 模式</h1>
       <h3 class="mb-10">
         <div class="pull-left">1、</div>
@@ -143,8 +145,8 @@
       <VueCountryIntl schema="modal" modal-class="modal-class" :listZIndex="5000" v-model:visible="schemaModalVisible.default" v-model="schemaModal.default">
         <template slot="vueCountryNoData"><h1>没有找到该国籍！</h1></template>
       </VueCountryIntl>
-      <h5 class="mt-5">区号：{{schemaModal.default || '--'}}</h5>
-    </div>
+      <h5 class="mt-5">区号：{{schemaModal.default || '&#45;&#45;'}}</h5>
+    </div>-->
   </div>
 </template>
 

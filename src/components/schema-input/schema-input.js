@@ -127,10 +127,20 @@ export default {
     let viewText = computed(() => {
       let selectedInner = selected.item;
       let name = props.useChinese ? selectedInner.nameCN : selectedInner.name;
+      let value = (props.modelValue + '').charAt(0) == '+' ? props.modelValue.substr(1) : props.modelValue;
       if (props.type.toLowerCase() === 'phone') {
+        let dialCode = selectedInner.dialCode;
         if (props.onlyValue) {
+          // 处理一个国家有多个手机区号的情况
+          if (dialCode == 1 && selectedInner.areaCodes) {
+            return '+' + (value || selectedInner.areaCodes[0]);
+          }
           return '+' + selectedInner.dialCode;
         } else if (props.showAreaCode) {
+          // 处理一个国家有多个手机区号的情况
+          if (dialCode == 1 && selectedInner.areaCodes) {
+            return `${selectedInner.name}(+${value || selectedInner.areaCodes[0]})`;
+          }
           return name + '(+' + selectedInner.dialCode + ')';
         } else {
           return name;
