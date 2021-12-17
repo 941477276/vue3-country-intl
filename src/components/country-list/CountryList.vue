@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { reactive, computed, onMounted, watch } from 'vue';
+import { reactive, ref, computed, onMounted, watch } from 'vue';
 import { vueCountryTool } from '../vueCountryTool';
 import { countriesData } from './data';
 
@@ -107,6 +107,7 @@ export default {
     let selected = reactive({
       item: {}
     });
+    let currentVal = ref('');
 
     // 数据列表
     let countryList = computed(() => {
@@ -186,14 +187,20 @@ export default {
         target = target.parentElement;
       }
       console.log('target', target, e.currentTarget);
-      // let iso = target.getAttribute('data-iso');
-      let index = target.getAttribute('data-index');
+      let iso = target.getAttribute('data-iso');
+      // let index = target.getAttribute('data-index');
+      for(let i = 0, len = countryList.value.length; i< len; i++){
+        if(countryList.value[i].iso2 == iso){
+          selectedInner = countryList.value[i];
+          break;
+        }
+      }
       /*if (iso === this.selected.iso2) {
         selected = {};
       } else {
         selected = this.countryList[index];
       }*/
-      selectedInner = countryList.value[index];
+      // selectedInner = countryList.value[index];
       // 如果用户点击的是“无数据提示”则select会为undefined
       if(!selectedInner){
         return;
@@ -218,6 +225,7 @@ export default {
       }else{
         result = selected.iso2 || '';
       }
+      currentVal.value = result;
       // 实现自定义v-model第二步
       context.emit('update:modelValue', result);
       // 执行回调
@@ -272,6 +280,10 @@ export default {
     }
 
     watch(() => props.modelValue, () => {
+      // 防止重复计算
+      if(currentVal.value == props.modelValue){
+        return;
+      }
       let cur = calcSelectedOption();
       console.log('执行watch了');
       if(!cur){
@@ -279,6 +291,7 @@ export default {
       }
       if(cur !== selected.item){
         selected.item = cur;
+        currentVal.value = props.modelValue;
         let isPhone = props.type.toLowerCase() === 'phone';
         let result = '';
         if(isPhone){
