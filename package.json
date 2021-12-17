@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:esm": "rollup -c rollup.config.js",
     "serve": "vite preview"
   },
   "main": "lib/vue3-country-intl.es.js",
@@ -20,14 +21,16 @@
   },
   "devDependencies": {
     "@babel/core": "7.14.3",
+    "@rollup/plugin-node-resolve": "^13.1.1",
     "@rollup/plugin-replace": "2.4.2",
     "@vitejs/plugin-vue": "1.2.2",
     "@vue/compiler-sfc": "3.0.5",
+    "esbuild": "^0.14.5",
     "rollup": "2.50.5",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-css-only": "3.1.0",
-    "rollup-plugin-esbuild": "4.2.3",
+    "rollup-plugin-esbuild": "4.7.2",
     "rollup-plugin-node-resolve": "5.2.0",
     "rollup-plugin-postcss": "4.0.0",
     "rollup-plugin-styles": "3.14.1",
