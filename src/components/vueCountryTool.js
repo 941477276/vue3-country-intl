@@ -232,7 +232,7 @@ const vueCountryTool = {
    * @returns {boolean}
    */
   eleHasScroll (ele) {
-    if (!ele instanceof HTMLElement) {
+    if (!(ele instanceof HTMLElement)) {
       return false;
     }
     if (ele.scrollTop > 0) {
