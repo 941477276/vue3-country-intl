@@ -1,6 +1,8 @@
 import { reactive, ref, watch, onBeforeUnmount } from 'vue';
 import CountryList from '../country-list/CountryList.vue';
-// import {vueCountryTool} from "../vueCountryTool";
+import { vueCountryTool } from '../vueCountryTool';
+import { countriesData } from '../country-list/data';
+
 export default {
   name: "SchemaModal",
   components: {
@@ -115,6 +117,7 @@ export default {
     let searchText = ref('');
     let schemaModalValue = ref(props.modelValue);
     let modalVisible = ref(props.visible);
+    let modalDisplay = ref(false);
     let countryListVisible = ref(false);
     let intlModal = ref(null);
 
@@ -177,7 +180,16 @@ export default {
       }
       console.log('watch visible 执行显示/隐藏操作')
       if(newVal){
-        show();
+        if(!modalDisplay.value){
+          modalDisplay.value = true;
+          selected.item = vueCountryTool.calcSelectedOption(props, countriesData);
+          let timer = setTimeout(() => {
+            clearTimeout(timer);
+            show();
+          }, 0);
+        }else{
+          show();
+        }
       }else {
         hide();
       }
@@ -195,6 +207,7 @@ export default {
       searchText,
       schemaModalValue,
       modalVisible,
+      modalDisplay,
       countryListVisible,
       intlModal,
       onCountryChange,

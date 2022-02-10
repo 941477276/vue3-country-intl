@@ -22,7 +22,6 @@ input、popover、modal）
 
 ## 安裝
 `npm install vue3-country-intl --save`
-> 由于使用`rollup`打包后使用不了，因此还没有将其发布到npm上！有大神可以指点下为什么打包后会用不了吗？
 
 ## 使用——.vue单文件
 ```
@@ -42,7 +41,7 @@ Vue.component(Vue3CountryIntl.name, Vue3CountryIntl);
 ## 使用——直接引入js文件
 ```
 <link rel="stylesheet" href="./lib/vue3-country-intl.css">
-<script src="./lib/vue3-country-intl.min.js"></script>
+<script src="./lib/vue3-country-intl.esm.min.js"></script>
 <script>
   Vue.component('vue3-country-intl', vue3CountryIntl);
   new Vue({

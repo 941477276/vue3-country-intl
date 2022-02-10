@@ -2,14 +2,15 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
-/*import Vue3CountryIntl from '../lib/vue3-country-intl.es';
-import '../lib/vue3-country-intl.css';
 
-console.log('Vue3CountryIntl', Vue3CountryIntl);*/
+/*import VueCountryIntl from '../lib/vue3CountryIntl.js';
+import '../lib/vue3CountryIntl.css';
+
+console.log('Vue3CountryIntl', VueCountryIntl);*/
 
 const app = createApp(App);
 
-// app.component(Vue3CountryIntl.name, Vue3CountryIntl)
+// app.component('VueCountryIntl', VueCountryIntl)
 
 
 app.mount('#app')

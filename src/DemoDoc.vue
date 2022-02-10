@@ -150,11 +150,11 @@
 
 <script>
 import { ref, reactive, onMounted } from 'vue';
-import VueCountryIntl from './components/Vue3CountryIntl.vue';
-/*import VueCountryIntl from '../lib/vue3-country-intl.es';
-import '../lib/vue3-country-intl.css';*/
+// import VueCountryIntl from './components/Vue3CountryIntl.vue';
+import VueCountryIntl from '../lib/vue3CountryIntl.esm.min';
+import '../lib/vue3-country-intl.css';
 
-console.log(VueCountryIntl)
+console.log(VueCountryIntl);
 export default {
   name: 'DemoDoc',
   components: {
@@ -172,7 +172,7 @@ export default {
       selected: {}
     });
     let schemaPopoverData = reactive({
-      default: '',
+      default: '+86',
       defaultVisible: false,
       defaultVisible2: false
     });
