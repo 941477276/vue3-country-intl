@@ -1,6 +1,7 @@
 import { ref, reactive, watch, onMounted, nextTick, onBeforeUnmount } from 'vue';
 import CountryList from '../country-list/CountryList.vue';
 import {vueCountryTool} from "../vueCountryTool";
+import {countriesData} from '../country-list/data';
 
 export default {
   name: "SchemaPopover",
@@ -158,6 +159,7 @@ export default {
     let popoverContainer = ref(null);
     let popover = ref(null);
     let popoverVisible = ref(false);
+    let popoverDisplay = ref(false);
 
     // popover 定位数据
     let popoverPosition = reactive({
@@ -248,9 +250,9 @@ export default {
 
 
     watch(schemaPopoverValue, (newVal) => {
-      console.log('watch schemaPopoverValue', newVal, schemaPopoverValue.value);
+      console.log('watch schemaPopoverValue', newVal, props.modelValue);
       if(props.modelValue != newVal){
-        console.log('执行修改modelValue');
+        console.log('执行修改modelValue', newVal);
         ctx.emit('update:modelValue', newVal);
       }
     }, { immediate: true });
@@ -263,7 +265,17 @@ export default {
     });
     watch(() => props.visible, (newVal) => {
       if(newVal){
-        show();
+        if(!popoverDisplay.value){
+          popoverDisplay.value = true;
+          selected.item = vueCountryTool.calcSelectedOption(props, countriesData);
+          console.log('首次计算默认选中项', selected.item);
+          let timer = setTimeout(() => {
+            clearTimeout(timer);
+            show();
+          }, 0);
+        }else{
+          show();
+        }
       }
     });
 
@@ -306,6 +318,7 @@ export default {
       countryListShow,
       listOnBottom,
       schemaPopoverValue,
+      popoverDisplay,
 
       popoverContainer,
       popover,

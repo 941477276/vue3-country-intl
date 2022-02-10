@@ -24,6 +24,7 @@
     <transition :name="transitionName">
       <country-list
         ref="countryList"
+        v-if="countryListDisplay"
         v-show="countryListVisible"
         v-model="schemaInputValue"
         :search-text="searchText"

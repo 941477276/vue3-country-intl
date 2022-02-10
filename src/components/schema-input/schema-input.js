@@ -1,6 +1,7 @@
-import { reactive, ref, computed, watch, nextTick } from 'vue';
+import { reactive, ref, computed, watch, nextTick, onMounted } from 'vue';
 import CountryList from '../country-list/CountryList.vue';
 import {vueCountryTool} from "../vueCountryTool";
+import {countriesData} from '../country-list/data';
 
 export default {
   name: "SchemaInput",
@@ -154,6 +155,7 @@ export default {
       }
     });
     let searchText = ref('');
+    let countryListDisplay = ref(false); // 列表是否渲染
     let countryListShow = ref(false); // 列表是否显示
     let inputFocused = ref(false); // input输入框是否获得了焦点
     let listOnBottom = ref(true); // // 列表在输入框下方
@@ -205,22 +207,33 @@ export default {
       if (props.disabled || props.readonly || props.static) {
         return;
       }
-      inputFocused.value = true;
-      countryListShow.value = true;
-      searchText.value = '';
+      let handleShow = () => {
+        inputFocused.value = true;
+        countryListShow.value = true;
+        searchText.value = '';
 
-      if(!props.readonly){
-        console.log('自动获得焦点')
+        if(!props.readonly){
+          console.log('自动获得焦点')
+          let timer = setTimeout(() => {
+            clearTimeout(timer);
+            searchInput.value.focus();
+          }, 0);
+        }
+
+        // 每次显示时重新计算方位
+        nextTick(() => {
+          calculatePopoverDirection(countryList.value.$el);
+        });
+      }
+      if(!countryListDisplay.value){
+        countryListDisplay.value = true;
         let timer = setTimeout(() => {
           clearTimeout(timer);
-          searchInput.value.focus();
+          handleShow();
         }, 0);
+      }else {
+        handleShow();
       }
-
-      // 每次显示时重新计算方位
-      nextTick(() => {
-        calculatePopoverDirection(countryList.value.$el);
-      });
     }
 
     let hide = () => {
@@ -250,11 +263,24 @@ export default {
         console.log('modelValue外部改变，执行同步schemaInputValue')
         schemaInputValue.value = newVal;
       }
+      console.log('countryListDisplay', countryListDisplay.value);
+      // 如果列表未被渲染过，则自己计算选中的项
+      if(!countryListDisplay.value){
+        console.log('列表未被渲染过，自己计算选中的项');
+        selected.item = vueCountryTool.calcSelectedOption(props, countriesData);
+      }
+    }, { immediate: true });
+
+    onMounted(() => {
+      if(props.static){
+        countryListDisplay.value = true;
+      }
     });
 
     return {
       id: ref('vue_country_intl-' + (window._vueCountryIntl_count++ || 1)),
       searchText,
+      countryListDisplay,
       countryListVisible,
       inputFocused,
       listOnBottom,

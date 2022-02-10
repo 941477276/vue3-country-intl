@@ -26,7 +26,7 @@ const vueCountryTool = {
    * @returns {Boolean}
    */
   elementContains (ele, childEle) {
-    if(!ele || !childEle){
+    if (!ele || !childEle) {
       return false;
     }
     if (ele === childEle) {
@@ -189,7 +189,7 @@ const vueCountryTool = {
     let scrollParent = vueCountryTool.getScrollParent(ele);
     console.log('getScrollParent', vueCountryTool.getScrollParent(ele).nodeName);
     // 如果当前元素有滚动条的父级元素不是html，则获取有滚动条的父级元素的滚动条的位置
-    if(scrollParent && scrollParent.nodeName != 'HTML'){
+    if (scrollParent && scrollParent.nodeName != 'HTML') {
       eleWrapperScrollTop = vueCountryTool.scrollTop(ele);
     }
     // 获取元素距离浏览器最顶端的距离
@@ -250,8 +250,8 @@ const vueCountryTool = {
    * 获取元素有滚动条的父级元素
    * @param ele
    */
-  getScrollParent(ele){
-    if(!ele){
+  getScrollParent (ele) {
+    if (!ele) {
       return;
     }
     var eleParent = ele.parentElement;
@@ -261,6 +261,42 @@ const vueCountryTool = {
       }
       eleParent = eleParent.parentElement;
     }
+  },
+  calcSelectedOption (props, countryList) {
+    // console.log('计算选中值');
+    let value = props.modelValue;
+    if ((value + '').length == 0) {
+      return {};
+    }
+    let isPhone = props.type.toLowerCase() === 'phone';
+    if ((value + '').charAt(0) === '+') {
+      value = value.substr(1);
+    }
+    let item = countryList.filter((item) => {
+      if (isPhone) {
+        if (props.iso2) {
+          // console.log('iso2', this.iso2, item.iso2);
+          return item.iso2 == this.iso2;
+        }
+        // 一个国家只有一个手机区号的情况
+        if (item.dialCode == value) {
+          return true;
+        }
+
+        // 一个国家有多个手机区号的情况
+        if (item.dialCode == 1 && item.areaCodes) {
+          return item.areaCodes.some(areaCode => areaCode == value);
+        }
+      } else {
+        return item.iso2 == value;
+      }
+    });
+    if (!item || item.length === 0) {
+      item = {};
+    } else {
+      item = item[0] || {};
+    }
+    return item;
   }
 };
 

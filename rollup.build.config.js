@@ -47,7 +47,7 @@ export default {
     styles({
       // mode: "extract",
       // ... or with relative to output dir/output file's basedir (but not outside of it)
-      mode: ["extract", "vue3CountryIntl.css"],
+      mode: ["extract", "vue3-country-intl.css"],
       minimize: true, // 是否压缩文件
       url: {
         publicPath: './', // CSS 文件中 URL 的公共路径

@@ -4,6 +4,7 @@
     <teleport to="body">
       <transition :name="transitionName">
         <div
+          v-if="popoverDisplay"
           v-show="visible"
           class="vue-country-intl-popover"
           :class="[{'list-on-top': !listOnBottom, 'list-on-bottom': listOnBottom}, popoverClass]"

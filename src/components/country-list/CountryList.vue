@@ -217,23 +217,24 @@ export default {
       let result = '';
       if(isPhone){
         // 一个国家有多个手机区号
-        if(selected.dialCode == 1 && selected.areaCodes) {
-          result = selected.areaCodes[0];
+        if(selectedInner.dialCode == 1 && selectedInner.areaCodes) {
+          result = selectedInner.areaCodes[0];
         }else {
-          result = selected.dialCode || '';
+          result = selectedInner.dialCode || '';
         }
       }else{
-        result = selected.iso2 || '';
+        result = selectedInner.iso2 || '';
       }
       currentVal.value = result;
       // 实现自定义v-model第二步
       context.emit('update:modelValue', result);
+      // console.log('CountryList.vue  update:modelValue', result, selected);
       // 执行回调
       context.emit('onChange', selectedInner, result);
     }
 
     // 计算默认选中的值
-    let calcSelectedOption = () => {
+    /*let calcSelectedOption = () => {
       // console.log('计算选中值');
       let value = props.modelValue;
       if((value + '').length == 0){
@@ -268,7 +269,7 @@ export default {
         item = item[0] || {};
       }
       return item;
-    }
+    }*/
 
     let areaCodeView = (dialCode, country) => {
       // 有些国家的手机区号会有多个值
@@ -284,7 +285,8 @@ export default {
       if(currentVal.value == props.modelValue){
         return;
       }
-      let cur = calcSelectedOption();
+      // let cur = calcSelectedOption();
+      let cur = vueCountryTool.calcSelectedOption(props, countryList.value);
       console.log('执行watch了');
       if(!cur){
         return;
