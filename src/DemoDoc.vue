@@ -151,10 +151,10 @@
 <script>
 import { ref, reactive, onMounted } from 'vue';
 import VueCountryIntl from './components/Vue3CountryIntl.vue';
-/*import VueCountryIntl from '../lib/vue3CountryIntl';
-import '../lib/vue3CountryIntl.css';*/
+// import VueCountryIntl from '../lib/vue3CountryIntl.esm.min';
+// import '../lib/vue3CountryIntl.css';
 
-// console.log(VueCountryIntl)
+console.log(VueCountryIntl);
 export default {
   name: 'DemoDoc',
   components: {

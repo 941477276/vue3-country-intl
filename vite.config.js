@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite'
-import path from 'path';
 import vue from '@vitejs/plugin-vue'
 import { terser } from "rollup-plugin-terser"; // 压缩代码
 var args = process.argv ? process.argv.slice(2) : [];
