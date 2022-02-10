@@ -1,4 +1,13 @@
 node_modules
+src
+public
+lib
+.babelrc
+index.html
+package.json
+README.md
+rollup.build.config.js
+vite.config.js
 .idea
 .DS_Store
 dist-ssr
