@@ -1,11 +1,13 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { terser } from "rollup-plugin-terser"; // 压缩代码
+import ViteRequireContext from '@originjs/vite-plugin-require-context'; // 支持 require.context 导入文件
 var args = process.argv ? process.argv.slice(2) : [];
 // console.log('args', args);
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    ViteRequireContext(),
     vue(),
     terser({
       compress: {

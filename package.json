@@ -1,13 +1,14 @@
 {
   "name": "vue3-country-intl",
   "description": "A vue3-based mobile phone area code selection, nationality selection component（一个基于vue3的手机区号选择、国籍选择组件）",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "MIT",
   "author": "hearth_learning_money",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "build:esm": "rollup -c rollup.build.config.js",
+    "build-vue3CountryFlag:esm": "rollup -c rollup.vue3CountryFlag.build.config.js",
     "serve": "vite preview"
   },
   "main": "lib/vue3CountryIntl.esm.min.js",
@@ -23,6 +24,7 @@
     "@babel/core": "7.14.3",
     "@babel/plugin-external-helpers": "^7.16.7",
     "@babel/preset-env": "^7.16.11",
+    "@originjs/vite-plugin-require-context": "^1.0.9",
     "@rollup/plugin-node-resolve": "^13.1.1",
     "@rollup/plugin-replace": "2.4.2",
     "@vitejs/plugin-vue": "1.2.2",
@@ -33,6 +35,7 @@
     "rollup": "2.50.5",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-commonjs": "10.1.0",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-esbuild": "4.7.2",
     "rollup-plugin-styles": "3.14.1",
     "rollup-plugin-terser": "^7.0.2",
@@ -42,6 +45,8 @@
   "keywords": [
     "country select",
     "vue3",
+    "flag",
+    "vue3 flags",
     "vue3 country select",
     "area code select",
     "vue3 area code select",
@@ -50,7 +55,8 @@
     "区号选择",
     "国籍选择",
     "vue3区号选择",
-    "vue3国籍选择"
+    "vue3国籍选择",
+    "国旗"
   ],
   "files": [
     "lib",
