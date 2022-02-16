@@ -58,7 +58,7 @@ export default {
     }, {});
     console.log(svgPathObj);
     // console.log('svgPathList', svgPathList)
-    (window || Object).__vue3_country_flag_files_path_obj = svgPathObj;
+    (window || Math).__vue3_country_flag_files_path_obj = svgPathObj;
     Vue.component(Vue3CountryFlag.name, Vue3CountryFlag);
     Vue3CountryFlag._country_flag_installed = true;
   }

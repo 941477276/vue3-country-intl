@@ -76,7 +76,7 @@ export default {
 
     // 计算选中国籍的国旗文件的路径
     let countryFlagPath = computed(() => {
-      let svgPathObj = (window || Object).__vue3_country_flag_files_path_obj || {};
+      let svgPathObj = (window || Math).__vue3_country_flag_files_path_obj || {};
       if(!props.value){
         // 空白
         return svgPathObj['empty'];

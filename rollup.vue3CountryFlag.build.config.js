@@ -9,6 +9,10 @@ import { terser } from "rollup-plugin-terser"; // 变丑别人看不懂（压缩
 import rollupReplace from '@rollup/plugin-replace'; // 替换代码中的某些变量
 import babel from 'rollup-plugin-babel';
 import copy from 'rollup-plugin-copy'; // 复制文件
+import minimist from 'minimist';
+
+const argv = minimist(process.argv.slice(2));
+console.log('argv', argv);
 
 
 export default {
@@ -20,9 +24,10 @@ export default {
     },
     // assetDir: './assets',
     name: 'Vue3CountryFlag', // 仓库或组件的名字，如果使用<script>引入方式则为暴露在window对象下的全局的变量名称
-    file: 'lib/vue3CountryFlag.esm.min.js', // 我们要生成的文件目录（css是自动创建）
-    format: 'esm', // 文件输出格式为 ES 模块文件，在现代浏览器中可以通过 <script type=module> 标签引入
+    file: `lib/vue3CountryFlag.${argv.format}.min.js`, // 我们要生成的文件目录（css是自动创建）
+    format: argv.format, // 文件输出格式为 ES 模块文件，在现代浏览器中可以通过 <script type=module> 标签引入
     assetFileNames: "[name][extname]", // rollup-plugin-styles插件生成的css文件的名称
+    exports: argv.format === 'esm' ? 'named' : 'auto',
     plugins: [
       terser({ // （js的丑化，即打包后，不容易阅读的压缩后的文件）； 如果去掉terser()，得到的js代码即为容易阅读的
         compress: {

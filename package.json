@@ -1,24 +1,28 @@
 {
   "name": "vue3-country-intl",
   "description": "A vue3-based mobile phone area code selection, nationality selection component（一个基于vue3的手机区号选择、国籍选择组件）",
-  "version": "1.0.5",
+  "version": "1.0.8",
   "license": "MIT",
   "author": "hearth_learning_money",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:esm": "rollup -c rollup.build.config.js",
-    "build-vue3CountryFlag:esm": "rollup -c rollup.vue3CountryFlag.build.config.js",
+    "build:esm": "rollup -c rollup.build.config.js --format esm",
+    "build:cjs": "rollup -c rollup.build.config.js --format cjs",
+    "build-vue3CountryFlag:esm": "rollup -c rollup.vue3CountryFlag.build.config.js --format esm",
+    "build-vue3CountryFlag:cjs": "rollup -c rollup.vue3CountryFlag.build.config.js --format cjs",
     "serve": "vite preview"
   },
-  "main": "lib/vue3CountryIntl.esm.min.js",
+  "main": "lib/vue3CountryIntl.cjs.min.js",
+  "browser": "lib/vue3CountryIntl.esm.min.js",
+  "module": "lib/vue3CountryIntl.esm.min.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/941477276/vue3-country-intl.git"
   },
   "homepage": "https://github.com/941477276/vue3-country-intl#readme",
   "dependencies": {
-    "vue": "^3.2.29"
+
   },
   "devDependencies": {
     "@babel/core": "7.14.3",
@@ -32,6 +36,7 @@
     "babel-loader": "^8.2.3",
     "css-loader": "^6.6.0",
     "esbuild": "^0.14.5",
+    "minimist": "^1.2.5",
     "rollup": "2.50.5",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-commonjs": "10.1.0",
@@ -40,7 +45,8 @@
     "rollup-plugin-styles": "3.14.1",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-vue": "6.0.0",
-    "vite": "2.2.3"
+    "vite": "2.2.3",
+    "vue": "^3.2.29"
   },
   "keywords": [
     "country select",

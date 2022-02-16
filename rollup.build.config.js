@@ -8,7 +8,10 @@ import commonjs from 'rollup-plugin-commonjs';
 import { terser } from "rollup-plugin-terser"; // 变丑别人看不懂（压缩后的）
 import rollupReplace from '@rollup/plugin-replace'; // 替换代码中的某些变量
 import babel from 'rollup-plugin-babel';
+import minimist from 'minimist';
 
+const argv = minimist(process.argv.slice(2));
+console.log('argv', argv);
 
 export default {
   input: 'src/components/Vue3CountryIntl.vue', // 输入文件
@@ -19,9 +22,10 @@ export default {
     },
     // assetDir: './assets',
     name: 'Vue3CountryIntl', // 仓库或组件的名字，如果使用<script>引入方式则为暴露在window对象下的全局的变量名称
-    file: 'lib/vue3CountryIntl.esm.min.js', // 我们要生成的文件目录（css是自动创建）
-    format: 'esm', // 文件输出格式为 ES 模块文件，在现代浏览器中可以通过 <script type=module> 标签引入
+    file: `lib/vue3CountryIntl.${argv.format}.min.js`, // 我们要生成的文件目录（css是自动创建）
+    format: argv.format, // 文件输出格式为 ES 模块文件，在现代浏览器中可以通过 <script type=module> 标签引入
     assetFileNames: "[name][extname]", // rollup-plugin-styles插件生成的css文件的名称
+    exports: argv.format === 'esm' ? 'named' : 'auto',
     plugins: [
       terser({ // （js的丑化，即打包后，不容易阅读的压缩后的文件）； 如果去掉terser()，得到的js代码即为容易阅读的
         compress: {
@@ -35,6 +39,10 @@ export default {
   },
   // 不将vue代码打包进我们的组件库代码中，如果将vue代码打包进组件库中则会报错
   external: ['vue'],
+  resolve: {
+    // alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
+    dedupe: ['vue']
+  },
   plugins: [
     nodeResolve(),
     vue({ // 引用的vue插件，即上述引入的插件使用一遍，以及添加一些选项
