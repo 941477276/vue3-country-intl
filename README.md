@@ -26,11 +26,16 @@ input、popover、modal）
 ## 1.3、使用——.vue单文件
 ```
 /*****main.js****/
+import Vue from 'vue';
+import App from './App.vue';
 import Vue3CountryIntl from 'vue3-country-intl';
 // 引入css
 import 'vue3-country-intl/lib/vue3-country-intl.css'
+
+
+const app = Vue.createApp(App);
 // 全局注册组件
-Vue.component(Vue3CountryIntl.name, Vue3CountryIntl);
+app.component(Vue3CountryIntl.name, Vue3CountryIntl);
 
 /*****组件中使用****/
 <template>
