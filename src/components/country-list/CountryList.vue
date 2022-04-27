@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { reactive, ref, computed, onMounted, watch } from 'vue';
+import { reactive, ref, computed, onMounted, watch, onUnmounted } from 'vue';
 import { vueCountryTool } from '../vueCountryTool';
 import { countriesData } from './data';
 
@@ -280,7 +280,7 @@ export default {
       return dialCode;
     }
 
-    watch(() => props.modelValue, () => {
+    let stopWatchModelValue = watch(() => props.modelValue, () => {
       // 防止重复计算
       if(currentVal.value == props.modelValue){
         return;
@@ -314,6 +314,10 @@ export default {
       if(props.type == 'phone' && (props.iso2 + '').length == 0){
         console.warn('当type=phone时最好传递iso2属性，否则当区号代码为212或358时会出现选择不正确问题！');
       }
+    });
+
+    onUnmounted(function () {
+      stopWatchModelValue();
     });
 
     return {

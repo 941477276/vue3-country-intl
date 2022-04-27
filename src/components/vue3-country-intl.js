@@ -2,7 +2,7 @@ import SchemaInput from './schema-input/SchemaInput.vue';
 import SchemaPopover from './schema-popover/SchemaPopover.vue';
 import SchemaModal from './schema-modal/SchemaModal.vue';
 import {vueCountryTool} from "./vueCountryTool";
-import { reactive, ref, onMounted, watch } from 'vue';
+import { reactive, ref, onMounted, watch, onUnmounted } from 'vue';
 
 /*
   {
@@ -195,24 +195,26 @@ export default {
     let modalVisible = ref(props.visible);
     let countryIntlValue = ref(props.modelValue);
 
-    watch(countryIntlValue, (newVal) => {
+    let stopWatchCountryIntlValue = watch(countryIntlValue, (newVal) => {
       if(props.modelValue != newVal){
         ctx.emit('update:modelValue', newVal);
       }
     }, { immediate: true });
-    watch(() => props.modelValue, (newVal) => {
+    let stopWatchModelValue = watch(() => props.modelValue, (newVal) => {
       if(countryIntlValue.value != newVal){
         countryIntlValue.value = newVal;
       }
     });
 
+    let stopWatchVisible;
+    let stopWatchModalVisible;
     if(props.schema == 'modal' || props.schema == 'popover'){
-      watch(() => props.visible, (newVal) => {
+      stopWatchVisible = watch(() => props.visible, (newVal) => {
         if(newVal != modalVisible.value){
           modalVisible.value = newVal;
         }
       });
-      watch(modalVisible, (newVal) => {
+      stopWatchModalVisible = watch(modalVisible, (newVal) => {
         if(newVal != props.visible){
           ctx.emit('update:visible', newVal);
         }
@@ -265,9 +267,20 @@ export default {
       }
     });
 
+    onUnmounted(function () {
+      stopWatchCountryIntlValue();
+      stopWatchModelValue();
+      if (typeof stopWatchVisible === 'function') {
+        stopWatchVisible();
+      }
+      if (typeof stopWatchModalVisible === 'function') {
+        stopWatchModalVisible();
+      }
+    });
+
     return {
       onChange,
-      version: ref('1.0.1'),
+      version: ref('1.0.9'),
       getSelected,
       modalVisible,
       countryIntlValue,

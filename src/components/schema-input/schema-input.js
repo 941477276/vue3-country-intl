@@ -1,4 +1,4 @@
-import { reactive, ref, computed, watch, nextTick, onMounted } from 'vue';
+import { reactive, ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import CountryList from '../country-list/CountryList.vue';
 import {vueCountryTool} from "../vueCountryTool";
 import {countriesData} from '../country-list/data';
@@ -250,14 +250,14 @@ export default {
       }, 100);
     }
 
-    watch(schemaInputValue, (newVal) => {
+    let stopWatchSchemaInputValue = watch(schemaInputValue, (newVal) => {
       console.log('watch schemaInputValue', newVal, schemaInputValue.value);
       if(props.modelValue != newVal){
         console.log('执行修改modelValue');
         ctx.emit('update:modelValue', newVal);
       }
     }, { immediate: true });
-    watch(() => props.modelValue, (newVal) => {
+    let stopWatchModelValue = watch(() => props.modelValue, (newVal) => {
       console.log('watch modelValue', newVal, schemaInputValue.value)
       if(schemaInputValue.value != newVal){
         console.log('modelValue外部改变，执行同步schemaInputValue')
@@ -275,6 +275,11 @@ export default {
       if(props.static){
         countryListDisplay.value = true;
       }
+    });
+
+    onUnmounted(function () {
+      stopWatchModelValue();
+      stopWatchSchemaInputValue();
     });
 
     return {

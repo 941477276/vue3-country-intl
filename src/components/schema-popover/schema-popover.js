@@ -1,4 +1,4 @@
-import { ref, reactive, watch, onMounted, nextTick, onBeforeUnmount } from 'vue';
+import { ref, reactive, watch, onMounted, nextTick, onUnmounted } from 'vue';
 import CountryList from '../country-list/CountryList.vue';
 import {vueCountryTool} from "../vueCountryTool";
 import {countriesData} from '../country-list/data';
@@ -249,21 +249,21 @@ export default {
 
 
 
-    watch(schemaPopoverValue, (newVal) => {
+    let stopWatchSchemaPopoverValue = watch(schemaPopoverValue, (newVal) => {
       console.log('watch schemaPopoverValue', newVal, props.modelValue);
       if(props.modelValue != newVal){
         console.log('执行修改modelValue', newVal);
         ctx.emit('update:modelValue', newVal);
       }
     }, { immediate: true });
-    watch(() => props.modelValue, (newVal) => {
+    let stopWatchModelValue = watch(() => props.modelValue, (newVal) => {
       console.log('watch modelValue', newVal, schemaPopoverValue.value)
       if(schemaPopoverValue.value != newVal){
         console.log('modelValue外部改变，执行同步schemaPopoverValue')
         schemaPopoverValue.value = newVal;
       }
     });
-    watch(() => props.visible, (newVal) => {
+    let stopWatchVisible = watch(() => props.visible, (newVal) => {
       if(newVal){
         if(!popoverDisplay.value){
           popoverDisplay.value = true;
@@ -307,9 +307,11 @@ export default {
       vueCountryTool.bindEvent(document.body, 'click', documentClickEvt);
     });
 
-    /*onBeforeUnmount(() => {
-      vueCountryTool.unBindEvent(document.body, 'click', documentClickEvt);
-    });*/
+    onUnmounted(function () {
+      stopWatchModelValue();
+      stopWatchSchemaPopoverValue();
+      stopWatchVisible();
+    });
 
     return {
       id: ref('vue_country_intl-' + (window._vueCountryIntl_count++ || 2)),

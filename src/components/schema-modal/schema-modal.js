@@ -1,4 +1,4 @@
-import { reactive, ref, watch, onBeforeUnmount } from 'vue';
+import { reactive, ref, watch, onBeforeUnmount, onUnmounted } from 'vue';
 import CountryList from '../country-list/CountryList.vue';
 import { vueCountryTool } from '../vueCountryTool';
 import { countriesData } from '../country-list/data';
@@ -159,21 +159,21 @@ export default {
       }, 100);
     }
 
-    watch(schemaModalValue, (newVal) => {
+    let stopWatchSchemaModalValue = (schemaModalValue, (newVal) => {
       console.log('watch schemaModalValue', newVal, schemaModalValue.value);
       if (props.modelValue != newVal) {
         console.log('执行修改modelValue');
         ctx.emit('update:modelValue', newVal);
       }
     }, { immediate: true });
-    watch(() => props.modelValue, (newVal) => {
+    let stopWatchModelValue = watch(() => props.modelValue, (newVal) => {
       console.log('watch modelValue', newVal, schemaModalValue.value)
       if (schemaModalValue.value != newVal) {
         console.log('modelValue外部改变，执行同步schemaModalValue')
         schemaModalValue.value = newVal;
       }
     });
-    watch(() => props.visible, (newVal) => {
+    let stopWatchVisible = watch(() => props.visible, (newVal) => {
       console.log('watch visible', newVal);
       if(newVal === modalVisible.value){
         return;
@@ -200,6 +200,12 @@ export default {
     onBeforeUnmount(() => {
       hide();
     });
+    onUnmounted(function () {
+      stopWatchModelValue();
+      stopWatchSchemaModalValue();
+      stopWatchVisible();
+    });
+
 
     return {
       id: ref('vue_country_intl-' + (window._vueCountryIntl_count++)),
