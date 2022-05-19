@@ -26,7 +26,7 @@
         ref="countryList"
         v-if="countryListDisplay"
         v-show="countryListVisible"
-        v-model="schemaInputValue"
+        :model-value="modelValue"
         :search-text="searchText"
         :selectedText="selectedText"
         :show-selected-text="showSelectedText"
@@ -37,7 +37,8 @@
         :only-country="onlyCountry"
         :no-data-text="noDataText"
         :use-chinese="useChinese"
-        @onChange="onCountryChange">
+        @onChange="onCountryChange"
+        @update:modelValue="onModelValue">
         <template slot="vueCountryNoData"><slot name="vueCountryNoData"></slot></template>
       </country-list>
     </transition>

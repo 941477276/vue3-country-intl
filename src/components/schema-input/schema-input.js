@@ -161,7 +161,6 @@ export default {
     let listOnBottom = ref(true); // // 列表在输入框下方
     let isIos = ref(false);
     let deviceWidth = ref(window.innerWidth);
-    let schemaInputValue = ref(props.modelValue);
     let searchInput = ref(null);
     let vueCountryIntlWrapper = ref(null);
     let countryListVisible = computed(() => {
@@ -237,7 +236,7 @@ export default {
     }
 
     let hide = () => {
-      if (props.disabled || props.readonly || props.static) {
+      if (!countryListVisible.value || props.disabled || props.readonly || props.static) {
         return;
       }
       let timer = setTimeout(() => {
@@ -250,19 +249,11 @@ export default {
       }, 100);
     }
 
-    let stopWatchSchemaInputValue = watch(schemaInputValue, (newVal) => {
-      console.log('watch schemaInputValue', newVal, schemaInputValue.value);
-      if(props.modelValue != newVal){
-        console.log('执行修改modelValue');
-        ctx.emit('update:modelValue', newVal);
-      }
-    }, { immediate: true });
+    let onModelValue = function (newVal) {
+      ctx.emit('update:modelValue', newVal);
+    };
+
     let stopWatchModelValue = watch(() => props.modelValue, (newVal) => {
-      console.log('watch modelValue', newVal, schemaInputValue.value)
-      if(schemaInputValue.value != newVal){
-        console.log('modelValue外部改变，执行同步schemaInputValue')
-        schemaInputValue.value = newVal;
-      }
       console.log('countryListDisplay', countryListDisplay.value);
       // 如果列表未被渲染过，则自己计算选中的项
       if(!countryListDisplay.value){
@@ -279,7 +270,6 @@ export default {
 
     onUnmounted(function () {
       stopWatchModelValue();
-      stopWatchSchemaInputValue();
     });
 
     return {
@@ -291,7 +281,6 @@ export default {
       listOnBottom,
       isIos,
       deviceWidth,
-      schemaInputValue,
       inputWrap,
       countryList,
       viewText,
@@ -299,6 +288,7 @@ export default {
       searchInput,
       vueCountryIntlWrapper,
       onCountryChange,
+      onModelValue,
       hide,
       show
     }

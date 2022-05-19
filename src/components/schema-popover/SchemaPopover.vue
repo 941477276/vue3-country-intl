@@ -16,7 +16,7 @@
           </div>
           <country-list
             ref="countryList"
-            v-model="schemaPopoverValue"
+            :model-value="modelValue"
             :search-text="searchText"
             :selectedText="selectedText"
             :show-selected-text="showSelectedText"
@@ -27,6 +27,7 @@
             :only-country="onlyCountry"
             :no-data-text="noDataText"
             :use-chinese="useChinese"
+            @update:modelValue="onModelValueChange"
             @onChange="onCountryChange">
             <template slot="vueCountryNoData">
               <slot name="vueCountryNoData"></slot>

@@ -115,7 +115,6 @@ export default {
       item: {}
     });
     let searchText = ref('');
-    let schemaModalValue = ref(props.modelValue);
     let modalVisible = ref(props.visible);
     let modalDisplay = ref(false);
     let countryListVisible = ref(false);
@@ -146,6 +145,9 @@ export default {
     }
 
     let hide = () => {
+      if (!countryListVisible.value) {
+        return;
+      }
       let classList = document.body.classList;
       let timer = setTimeout(() => {
         clearTimeout(timer);
@@ -159,20 +161,10 @@ export default {
       }, 100);
     }
 
-    let stopWatchSchemaModalValue = (schemaModalValue, (newVal) => {
-      console.log('watch schemaModalValue', newVal, schemaModalValue.value);
-      if (props.modelValue != newVal) {
-        console.log('执行修改modelValue');
-        ctx.emit('update:modelValue', newVal);
-      }
-    }, { immediate: true });
-    let stopWatchModelValue = watch(() => props.modelValue, (newVal) => {
-      console.log('watch modelValue', newVal, schemaModalValue.value)
-      if (schemaModalValue.value != newVal) {
-        console.log('modelValue外部改变，执行同步schemaModalValue')
-        schemaModalValue.value = newVal;
-      }
-    });
+    let onModelValueChange = function (newVal) {
+      ctx.emit('update:modelValue', newVal);
+    }
+
     let stopWatchVisible = watch(() => props.visible, (newVal) => {
       console.log('watch visible', newVal);
       if(newVal === modalVisible.value){
@@ -201,8 +193,6 @@ export default {
       hide();
     });
     onUnmounted(function () {
-      stopWatchModelValue();
-      stopWatchSchemaModalValue();
       stopWatchVisible();
     });
 
@@ -211,12 +201,12 @@ export default {
       id: ref('vue_country_intl-' + (window._vueCountryIntl_count++)),
       selected,
       searchText,
-      schemaModalValue,
       modalVisible,
       modalDisplay,
       countryListVisible,
       intlModal,
       onCountryChange,
+      onModelValueChange,
       show,
       hide
     };

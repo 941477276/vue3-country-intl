@@ -155,7 +155,6 @@ export default {
     let searchText = ref('');
     let countryListShow = ref(false); // 列表是否显示
     let listOnBottom = ref(true); // // 列表在输入框下方
-    let schemaPopoverValue = ref(props.modelValue);
     let popoverContainer = ref(null);
     let popover = ref(null);
     let popoverVisible = ref(false);
@@ -247,22 +246,10 @@ export default {
       ctx.emit('update:visible', false);
     }
 
+    let onModelValueChange = function (newVal) {
+      ctx.emit('update:modelValue', newVal);
+    };
 
-
-    let stopWatchSchemaPopoverValue = watch(schemaPopoverValue, (newVal) => {
-      console.log('watch schemaPopoverValue', newVal, props.modelValue);
-      if(props.modelValue != newVal){
-        console.log('执行修改modelValue', newVal);
-        ctx.emit('update:modelValue', newVal);
-      }
-    }, { immediate: true });
-    let stopWatchModelValue = watch(() => props.modelValue, (newVal) => {
-      console.log('watch modelValue', newVal, schemaPopoverValue.value)
-      if(schemaPopoverValue.value != newVal){
-        console.log('modelValue外部改变，执行同步schemaPopoverValue')
-        schemaPopoverValue.value = newVal;
-      }
-    });
     let stopWatchVisible = watch(() => props.visible, (newVal) => {
       if(newVal){
         if(!popoverDisplay.value){
@@ -296,6 +283,9 @@ export default {
       evt = evt || window.event;
       let target = evt.target;
       console.log('document.body click');
+      if (!props.visible) {
+        return;
+      }
       if(vueCountryTool.elementContains(popoverContainer.value, target) || vueCountryTool.elementContains(popover.value, target)){
         console.log('阻止了');
         return;
@@ -308,9 +298,9 @@ export default {
     });
 
     onUnmounted(function () {
-      stopWatchModelValue();
-      stopWatchSchemaPopoverValue();
       stopWatchVisible();
+
+      vueCountryTool.unBindEvent(document.body, 'click', documentClickEvt);
     });
 
     return {
@@ -319,7 +309,6 @@ export default {
       searchText,
       countryListShow,
       listOnBottom,
-      schemaPopoverValue,
       popoverDisplay,
 
       popoverContainer,
@@ -329,6 +318,7 @@ export default {
       popoverMaxWidth,
 
       onCountryChange,
+      onModelValueChange,
       show,
       hide
     };
