@@ -185,7 +185,7 @@ export default {
     };
 
     let show = () => {
-      if(props.visible || props.disabled || props.readonly){
+      if(props.disabled || props.readonly){
         return;
       }
       nextTick(() => {
@@ -242,9 +242,6 @@ export default {
     }
     let hide = () => {
       console.log('hide fun');
-      if (!props.visible) {
-        return;
-      }
       ctx.emit('update:visible', false);
     }
 
