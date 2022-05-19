@@ -2,6 +2,7 @@ import { reactive, ref, watch, onBeforeUnmount, onUnmounted } from 'vue';
 import CountryList from '../country-list/CountryList.vue';
 import { vueCountryTool } from '../vueCountryTool';
 import { countriesData } from '../country-list/data';
+import { useLockScroll } from '../hooks/useLockScroll';
 
 export default {
   name: "SchemaModal",
@@ -131,12 +132,10 @@ export default {
         hide();
       }
     }
+    let unlockScroll; // 解锁浏览器滚动条
 
     let show = () => {
-      let classList = document.body.classList;
-      if (!classList.contains('lock-scroll')) {
-        classList.add('lock-scroll');
-      }
+      unlockScroll = useLockScroll();
       if (!countryListVisible.value) {
         countryListVisible.value = true;
       }
@@ -148,12 +147,11 @@ export default {
       if (!countryListVisible.value) {
         return;
       }
-      let classList = document.body.classList;
       let timer = setTimeout(() => {
         clearTimeout(timer);
-        // 解决ios无法点击问题
-        if (classList.contains('lock-scroll')) {
-          classList.remove('lock-scroll');
+        if (typeof unlockScroll == 'function') {
+          unlockScroll();
+          unlockScroll = null;
         }
         modalVisible.value = false;
         searchText.value = '';

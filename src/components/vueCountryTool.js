@@ -26,10 +26,10 @@ const vueCountryTool = {
    * @returns {Boolean}
    */
   elementContains (ele, childEle) {
-    if (!ele || !childEle) {
+    if (ele === childEle) {
       return false;
     }
-    if (ele === childEle) {
+    if (!ele) {
       return false;
     }
     if (typeof ele.contains === 'function') {
@@ -46,6 +46,185 @@ const vueCountryTool = {
         }
       }
       return false;
+    }
+  },
+  /**
+   * 判断元素是否包含指定className
+   * @param ele dom元素
+   * @param className className
+   * @returns {boolean}
+   */
+  hasClass (ele, className) {
+    if (!ele || !ele.nodeName) {
+      console.error('ele 必须是一个dom元素');
+      return
+    }
+    if (!className) {
+      console.error('className 必须是一个字符串');
+      return
+    }
+    if (ele.classList) {
+      return ele.classList.contains(className);
+    } else {
+      var flag = false
+      var classNameArr = ele.className.split(' ');
+      for (var i = 0, len = classNameArr.length; i < len; i++) {
+        if (classNameArr[i] === className) {
+          flag = true;
+          break;
+        }
+      }
+      return flag;
+    }
+  },
+  /**
+   * 判断浏览器是否有滚动条
+   * @returns {{horizontal: boolean, vertical: boolean}}
+   */
+  hasScroll () {
+    return {
+      vertical: document.body.offsetWidth < window.innerWidth,
+      horizontal: document.documentElement.clientHeight < window.innerHeight
+    };
+  },
+  /**
+   * 获取元素或浏览器滚动条的宽高
+   * @param isGetElementScrollWidth 是否为获取元素的滚动条宽高
+   * @returns {{horizontal: number, vertical: number}}
+   */
+  scrollWidth (isGetElementScrollWidth, ele) {
+    var tempDiv;
+    var tempInnerDiv = document.createElement('div');
+    var result = {
+      vertical: 0,
+      horizontal: 0
+    };
+    tempInnerDiv.style.cssText = 'width: 200px;height: 200px';
+    if (!isGetElementScrollWidth) { // 未传递dom元素则获取浏览器的滚动条
+      /* tempDiv = document.createElement('div');
+      tempDiv.style.cssText = 'width: 100px;height: 100px;opacity: 0;position:absolute;left: -100px;overflow:auto;'; */
+      result.vertical = window.innerWidth - document.documentElement.offsetWidth;
+      result.horizontal = window.innerHeight - document.documentElement.clientHeight;
+      return result;
+    } else if (ele) {
+      tempDiv = ele.cloneNode(true);
+    } else if (isGetElementScrollWidth && !ele) {
+      tempDiv = document.createElement('div');
+    }
+    tempDiv.style.cssText = 'width: 100px;height: 100px;opacity: 0;position:absolute;left: -100px;overflow:auto;';
+    tempDiv.appendChild(tempInnerDiv);
+    document.body.appendChild(tempDiv);
+
+    result.vertical = tempDiv.offsetWidth - tempDiv.clientWidth;
+    result.horizontal = tempDiv.offsetHeight - tempDiv.clientHeight;
+
+    document.body.removeChild(tempDiv);
+    tempDiv = tempInnerDiv = null;
+    return result;
+  },
+  /**
+   * 给指定元素添加class
+   * @param ele
+   * @param classname
+   */
+  addClass (ele, classname) {
+    if (!ele || !classname || ele.nodeType !== 1) {
+      return;
+    }
+    var classArr = classname.split(' ');
+    if (ele.classList) {
+      for (var i = 0, len = classArr.length; i < len; i++) {
+        var item = classArr[i];
+        if (!ele.classList.contains(item)) {
+          ele.classList.add(item);
+        }
+      }
+      return ele;
+    } else {
+      var classNameArr = ele.className && ele.className.length > 0 ? ele.className.split(' ') : [];
+      if (classNameArr.length === 0) {
+        ele.className = classname;
+        return;
+      }
+      // 合并两个数组
+      Array.prototype.push.apply(classNameArr, classArr);
+      classNameArr = vueCountryTool.arrayNoReapeat(classNameArr);
+      ele.className = classNameArr.join(' ');
+      return ele;
+    }
+  },
+  /**
+   * 数组去重
+   * @param arr 需要去重的数组
+   * @param isObjectValue 数组的值是否是引用类型
+   */
+  arrayNoReapeat (arr, isObjectValue) {
+    if (!arr || arr.length === 0) {
+      return arr;
+    }
+    isObjectValue = typeof isObjectValue === 'undefined' ? false : !!isObjectValue;
+    var arrLen = arr.length;
+    let newArr = [];
+    // 值类型的数组，使用对象属性唯一的特性来去重
+    if (!isObjectValue) {
+      var obj = {};
+      for (var i = 0; i < arrLen; i++) {
+        obj[arr[i]] = 1;
+      }
+      for (var attr in obj) {
+        newArr.push(attr);
+      }
+      return newArr;
+    }
+
+    newArr.push(arr[0]);
+    for (var i = 1; i < arrLen; i++) {
+      let item = arr[i];
+      let repeat = false;
+      for (var j = 0; j < newArr.length; j++) {
+        if (item === arr[j]) {
+          repeat = true;
+          break;
+        }
+      }
+      if (!repeat) {
+        newArr.push(item);
+      }
+    }
+    return newArr;
+  },
+  /**
+   * 给指定元素移除class
+   * @param ele
+   * @param classname
+   */
+  removeClass (ele, classname) {
+    if (!ele || !classname || ele.nodeType !== 1) {
+      return;
+    }
+    var classArr = classname.split(' ');
+    if (ele.classList) {
+      for (var i = 0, len = classArr.length; i < len; i++) {
+        var item = classArr[i];
+        if (ele.classList.contains(item)) {
+          ele.classList.remove(item);
+        }
+      }
+      return ele;
+    } else {
+      var classNameArr = ele.className && ele.className.length > 0 ? ele.className.split(' ') : [];
+      if (classNameArr.length === 0) {
+        return;
+      }
+      for (var i = classNameArr.length; i >= 0; i--) {
+        for (var j = 0, len2 = classArr.length; j < len2; j++) {
+          if (classNameArr[i] === classArr[j]) {
+            classNameArr.splice(i, 1);
+          }
+        }
+      }
+      ele.className = classNameArr.join(' ');
+      return ele;
     }
   },
   // 绑定事件
@@ -144,37 +323,6 @@ const vueCountryTool = {
       }
     }
     return index;
-  },
-  /**
-   * 给指定元素添加class
-   * @param ele
-   * @param classname
-   */
-  addClass (ele, classname) {
-    if (!ele || !classname || ele.nodeType !== 1) {
-      return;
-    }
-    let classArr = classname.split(' ');
-    if (ele.classList) {
-      for (var i = 0, len = classArr.length; i < len; i++) {
-        let item = classArr[i];
-        if (!ele.classList.contains(item)) {
-          ele.classList.add(item);
-        }
-      }
-      return ele;
-    } else {
-      let classNameArr = ele.className && ele.className.length > 0 ? ele.className.split(' ') : [];
-      if (classNameArr.length === 0) {
-        ele.className = classname;
-        return;
-      }
-      // 合并两个数组
-      Array.prototype.push.apply(classNameArr, classArr);
-      classNameArr = tool.arrayNoReapeat(classNameArr);
-      ele.className = classNameArr.join(' ');
-      return ele;
-    }
   },
   /**
    * 判断元素是否完全出现在视口中

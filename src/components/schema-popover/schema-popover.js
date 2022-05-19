@@ -153,7 +153,6 @@ export default {
       item: {}
     });
     let searchText = ref('');
-    let countryListShow = ref(false); // 列表是否显示
     let listOnBottom = ref(true); // // 列表在输入框下方
     let popoverContainer = ref(null);
     let popover = ref(null);
@@ -173,7 +172,7 @@ export default {
     let popoverInView = (top, left) => {
       // 浏览器滚动条高度
       let scrollTop = vueCountryTool.scrollTop();
-      console.log('scrollTop', scrollTop);
+      // console.log('scrollTop', scrollTop);
       top = top - scrollTop;
       let bottom = popover.value.offsetHeight + top;
       let wh = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight; // 浏览器高度兼容写法
@@ -186,7 +185,7 @@ export default {
     };
 
     let show = () => {
-      if(props.disabled || props.readonly){
+      if(props.visible || props.disabled || props.readonly){
         return;
       }
       nextTick(() => {
@@ -206,9 +205,9 @@ export default {
         let top = 0;
         let left = popoverContainerOffset.left + props.offset[0];
         top = (popoverContainerOffset.top + popoverContainerHeight + props.offset[1] - eleWrapperScrollTop);
-        console.log('popoverContainerOffset', popoverContainerOffset);
-        console.log('eleWrapperScrollTop', eleWrapperScrollTop);
-        console.log('eleWrapperScrollTop', eleWrapperScrollTop);
+        // console.log('popoverContainerOffset', popoverContainerOffset);
+        // console.log('eleWrapperScrollTop', eleWrapperScrollTop);
+        // console.log('eleWrapperScrollTop', eleWrapperScrollTop);
         console.log('top left', top, left);
         let isInView = popoverInView(top, left);
 
@@ -243,6 +242,9 @@ export default {
     }
     let hide = () => {
       console.log('hide fun');
+      if (!props.visible) {
+        return;
+      }
       ctx.emit('update:visible', false);
     }
 
@@ -271,7 +273,6 @@ export default {
       console.log('onCountryChange执行了')
       console.log('设置selected', newCountry, newCountry.iso2, selected.item.iso2)
       if(newCountry.iso2 !== selected.item.iso2){
-        console.log('设置selected111')
         selected.item = newCountry;
         ctx.emit('onChange', newCountry);
         hide();
@@ -307,7 +308,6 @@ export default {
       id: ref('vue_country_intl-' + (window._vueCountryIntl_count++ || 2)),
       selected,
       searchText,
-      countryListShow,
       listOnBottom,
       popoverDisplay,
 
