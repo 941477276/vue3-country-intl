@@ -14,7 +14,7 @@ const app = createApp(App);
 
 // app.component('VueCountryIntl', VueCountryIntl)
 // 引入各个国籍国旗的svg文件
-let svgFilesCtx = require.context('vue3-country-flag/lib/country-flag-svgs', true, /\.svg$/);
+let svgFilesCtx = require.context('../lib/country-flag-svgs', true, /\.svg$/);
 app.use(Vue3CountryFlag, svgFilesCtx);
 /*// 获取svg文件名称正则
 let reg = /(\w+)(\.\w*)*\.svg$/;
