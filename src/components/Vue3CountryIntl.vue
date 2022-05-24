@@ -3,7 +3,8 @@
     ref="schemaInput"
     v-if="schema === 'input'"
     v-bind="$props"
-    v-model="countryIntlValue"
+    :model-value="modelValue"
+    @update:modelValue="onModelValueChange"
     @onChange="onChange">
     <template #vueCountryNoData><slot name="vueCountryNoData"></slot></template>
     <template #selected><slot name="selected"></slot></template>
@@ -13,7 +14,8 @@
     ref="schemaPopover"
     v-else-if="schema === 'popover'"
     v-bind="$props"
-    v-model="countryIntlValue"
+    :model-value="modelValue"
+    @update:modelValue="onModelValueChange"
     v-model:visible="modalVisible"
     @onChange="onChange">
     <slot></slot>
@@ -25,7 +27,8 @@
     ref="schemaModal"
     v-else-if="schema === 'modal'"
     v-bind="$props"
-    v-model="countryIntlValue"
+    :model-value="modelValue"
+    @update:modelValue="onModelValueChange"
     v-model:visible="modalVisible"
     @onChange="onChange">
     <template #vueCountryNoData><slot name="vueCountryNoData"></slot></template>

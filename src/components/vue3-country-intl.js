@@ -193,18 +193,18 @@ export default {
       ctx.emit('onChange', newCountry);
     };
     let modalVisible = ref(props.visible);
-    let countryIntlValue = ref(props.modelValue);
+    /* let countryIntlValue = ref(props.modelValue);
 
     let stopWatchCountryIntlValue = watch(countryIntlValue, (newVal) => {
       if(props.modelValue != newVal){
         ctx.emit('update:modelValue', newVal);
       }
-    }, { immediate: true });
-    let stopWatchModelValue = watch(() => props.modelValue, (newVal) => {
+    }, { immediate: true }); */
+    /* let stopWatchModelValue = watch(() => props.modelValue, (newVal) => {
       if(countryIntlValue.value != newVal){
         countryIntlValue.value = newVal;
       }
-    });
+    }); */
 
     let stopWatchVisible;
     let stopWatchModalVisible;
@@ -220,6 +220,10 @@ export default {
         }
       });
     }
+
+    let onModelValueChange = function (newValue) {
+      ctx.emit('update:modelValue', newValue)
+    };
 
     let schemaInput = ref(null);
     let schemaPopover = ref(null);
@@ -268,8 +272,8 @@ export default {
     });
 
     onUnmounted(function () {
-      stopWatchCountryIntlValue();
-      stopWatchModelValue();
+      // stopWatchCountryIntlValue();
+      // stopWatchModelValue();
       if (typeof stopWatchVisible === 'function') {
         stopWatchVisible();
       }
@@ -280,15 +284,16 @@ export default {
 
     return {
       onChange,
-      version: ref('1.0.9'),
+      version: ref('1.0.13'),
       getSelected,
       modalVisible,
-      countryIntlValue,
+      // countryIntlValue,
       show,
       hide,
       schemaInput,
       schemaPopover,
-      modalPopover
+      modalPopover,
+      onModelValueChange
     }
   }
 };
