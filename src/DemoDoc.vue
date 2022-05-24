@@ -14,7 +14,8 @@
             </div>
           </h3>
           <VueCountryIntl v-model="schemaInputData.default" @onChange="onChange">
-            <template slot="vueCountryNoData"><h1>没有找到该国籍！</h1></template>
+            <template #vueCountryNoData><h1>没有找到该国籍！</h1></template>
+            <template #selected>(๑*◡*๑)<span style="margin-left: 5px;font-size: 1.3em;">👍</span></template>
           </VueCountryIntl>
           <h5 class="mt-5">区号代码：{{ schemaInputData.default || '--' }}</h5>
           <div class="hr"></div>

@@ -25,7 +25,8 @@
             :use-chinese="useChinese"
             @onChange="onCountryChange"
             @update:modelValue="onModelValueChange">
-            <template slot="vueCountryNoData"><slot name="vueCountryNoData"></slot></template>
+            <template #vueCountryNoData><slot name="vueCountryNoData"></slot></template>
+            <template #selected><slot name="selected"></slot></template>
           </country-list>
         </div>
       </div>

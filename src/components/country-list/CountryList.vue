@@ -13,7 +13,11 @@
         <span class="vue-country-areaCode" v-show="showAreaCode">
             +{{areaCodeView(item.dialCode, item)}}
         </span>
-        <span class="selected-text" v-show="showSelectedText">{{selectedText}}</span>
+        <span class="selected-text" v-show="showSelectedText">
+          <slot name="selected">
+            {{selectedText}}
+          </slot>
+        </span>
       </li>
       <li class="vue-country-no-data" v-show="countryList.length === 0">
         <slot name="vueCountryNoData">{{noDataText}}</slot>
@@ -179,12 +183,15 @@ export default {
       let target = e.target;
 
       let selectedInner;
-      console.log('列表项点击了')
+      console.log('列表项点击了', target)
       if(props.justRead){
         return;
       }
-      while (target.nodeName !== 'LI') {
+      while (target && target.nodeName !== 'LI') {
         target = target.parentElement;
+      }
+      if (!target) {
+        return;
       }
       console.log('target', target, e.currentTarget);
       let iso = target.getAttribute('data-iso');

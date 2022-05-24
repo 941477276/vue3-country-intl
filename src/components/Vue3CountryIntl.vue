@@ -5,9 +5,8 @@
     v-bind="$props"
     v-model="countryIntlValue"
     @onChange="onChange">
-    <template slot="vueCountryNoData">
-      <slot name="vueCountryNoData"></slot>
-    </template>
+    <template #vueCountryNoData><slot name="vueCountryNoData"></slot></template>
+    <template #selected><slot name="selected"></slot></template>
   </schema-input>
 
   <schema-popover
@@ -18,9 +17,8 @@
     v-model:visible="modalVisible"
     @onChange="onChange">
     <slot></slot>
-    <template slot="vueCountryNoData">
-      <slot name="vueCountryNoData"></slot>
-    </template>
+    <template #vueCountryNoData><slot name="vueCountryNoData"></slot></template>
+    <template #selected><slot name="selected"></slot></template>
   </schema-popover>
 
   <schema-modal
@@ -30,9 +28,8 @@
     v-model="countryIntlValue"
     v-model:visible="modalVisible"
     @onChange="onChange">
-    <template slot="vueCountryNoData">
-      <slot name="vueCountryNoData"></slot>
-    </template>
+    <template #vueCountryNoData><slot name="vueCountryNoData"></slot></template>
+    <template #selected><slot name="selected"></slot></template>
   </schema-modal>
 </template>
 
