@@ -335,7 +335,7 @@ const vueCountryTool = {
     // 元素有滚动条的父级元素的滚动条高度
     let eleWrapperScrollTop = 0;
     let scrollParent = vueCountryTool.getScrollParent(ele);
-    console.log('getScrollParent', vueCountryTool.getScrollParent(ele).nodeName);
+    // console.log('getScrollParent', vueCountryTool.getScrollParent(ele).nodeName);
     // 如果当前元素有滚动条的父级元素不是html，则获取有滚动条的父级元素的滚动条的位置
     if (scrollParent && scrollParent.nodeName != 'HTML') {
       eleWrapperScrollTop = vueCountryTool.scrollTop(ele);
