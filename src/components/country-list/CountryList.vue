@@ -1,7 +1,7 @@
 <template>
   <div class="vue-country-list-wrap"
        :style="{'z-index': listZIndex != 0 ? listZIndex : '', 'max-height': maxHeight > 0 ? (maxHeight + 'px') : ''}">
-    <ul class="vue-country-list" @click="countryItemClickEvt">
+    <ul class="vue-country-list" @mousedown="countryItemClickEvt">
       <li class="vue-country-item"
           v-for="(item, index) in countryList"
           :class="{selected: item.iso2 === selected.item.iso2}"
