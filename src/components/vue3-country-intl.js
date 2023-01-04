@@ -3,6 +3,7 @@ import SchemaPopover from './schema-popover/SchemaPopover.vue';
 import SchemaModal from './schema-modal/SchemaModal.vue';
 import {vueCountryTool} from "./vueCountryTool";
 import { reactive, ref, onMounted, watch, onUnmounted } from 'vue';
+import { countryListProps } from "./country-list/country-list-props";
 
 /*
   {
@@ -26,6 +27,7 @@ export default {
     'schema-modal': SchemaModal
   },
   props: {
+    ...countryListProps,
     // 展示模式
     schema: {
       type: String,
@@ -37,35 +39,6 @@ export default {
       type: String,
       default: '请选择国家',
     },
-    // 是否显示区号
-    showAreaCode: {
-      type: Boolean,
-      default: true,
-    },
-    // 实现自定义v-model第一步
-    modelValue: {
-      type: [String, Number],
-      default: ''
-    },
-    // 类型，有两种类型，第一种：选择手机号码区号，值为phone;第二种：选择国家，值为country
-    type: {
-      type: String,
-      default: 'phone',
-    },
-    iso2: { // 国籍代码，当type=phone时必须传递iso2属性，否则当区号代码为212或358时会出问题！
-      type: String,
-      default: ''
-    },
-    // 是否可以搜索
-    searchAble: {
-      type: Boolean,
-      default: true,
-    },
-    // 列表的层级
-    listZIndex: {
-      type: Number,
-      default: 0,
-    },
     // 输入框中是否显示图片
     showLabelImg: {
       type: Boolean,
@@ -76,11 +49,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    // 列表最大高度
-    maxHeight: {
-      type: Number,
-      default: 0,
-    },
     // 是否禁用
     disabled: {
       type: Boolean,
@@ -90,20 +58,6 @@ export default {
     readonly: {
       type: Boolean,
       default: false
-    },
-    // 选中项中右侧 "select" 的文案
-    selectedText: {
-      type: String,
-      default: 'Selected',
-    },
-    // 是否显示选中项右侧的 "select" 文案
-    showSelectedText: {
-      type: Boolean,
-      default: true,
-    },
-    searchInputPlaceholder: {
-      type: String,
-      default: '输入国家名称、区号搜索'
     },
     // popover弹窗距离参照元素的距离。只有在schema=popover时有效
     offsetTop: {
@@ -128,25 +82,6 @@ export default {
     cancelText: {
       type: String,
       default: '取消'
-    },
-    /* 禁用的国家(可以传递国家名称、国家代码、国家区号)，可以传递字符串也可以传递数组，传递字符串时禁用多个国家使用逗号分隔 */
-    disableCountry: {
-      type: [String, Array],
-      default(){
-        return [];
-      }
-    },
-    // 只显示指定的国家，可以传递字符串也可以传递数组，传递字符串时禁用多个国家使用逗号分隔
-    onlyCountry: {
-      type: [String, Array],
-      default(){
-        return [];
-      }
-    },
-    // 未搜索到国家数据时显示的文案
-    noDataText: {
-      type: String,
-      default: '未找到任何数据！'
     },
     // ios移动终端输入框是否只读，默认为true，因为在ios手机终端中如不是只读模式会弹出选择下来框出来
     iosMobileReadonly: {

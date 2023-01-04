@@ -20,6 +20,8 @@
             :search-text="searchText"
             :selectedText="selectedText"
             :show-selected-text="showSelectedText"
+            :show-area-code="showAreaCode"
+            :list-z-index="listZIndex"
             :type="type"
             :iso2="iso2"
             :search-able="searchAble"
