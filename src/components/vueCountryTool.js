@@ -423,8 +423,8 @@ const vueCountryTool = {
     let item = countryList.filter((item) => {
       if (isPhone) {
         if (props.iso2) {
-          // console.log('iso2', this.iso2, item.iso2);
-          return item.iso2 == this.iso2;
+          // console.log('iso2', props.iso2, item.iso2);
+          return item.iso2 == props.iso2;
         }
         // 一个国家只有一个手机区号的情况
         if (item.dialCode == value) {
