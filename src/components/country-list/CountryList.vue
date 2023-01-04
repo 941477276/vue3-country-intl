@@ -293,7 +293,8 @@ export default {
         return;
       }
       // let cur = calcSelectedOption();
-      let cur = vueCountryTool.calcSelectedOption(props, countryList.value);
+      // let cur = vueCountryTool.calcSelectedOption(props, countryList.value);
+      let cur = vueCountryTool.findCountryInfo(props.modelValue, props.type, props.iso2, countryList.value);
       console.log('执行watch了');
       if(!cur){
         return;

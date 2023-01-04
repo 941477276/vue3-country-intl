@@ -284,7 +284,7 @@ export default {
 
     return {
       onChange,
-      version: ref('1.0.13'),
+      version: '1.0.16',
       getSelected,
       modalVisible,
       // countryIntlValue,
@@ -293,7 +293,23 @@ export default {
       schemaInput,
       schemaPopover,
       modalPopover,
-      onModelValueChange
+      onModelValueChange,
+      // 根据国籍编码或国家区号查找国籍信息
+      getCountryInfo (countryCodeOrAreaCode, type = 'phone', iso2) {
+        let com;
+        switch (props.schema) {
+          case 'input':
+            com = schemaInput;
+            break;
+          case 'popover':
+            com = schemaPopover;
+            break;
+          case 'modal':
+            com = modalPopover;
+            break;
+        }
+        return com.value.getCountryInfo(countryCodeOrAreaCode, type, iso2);
+      }
     }
   }
 };

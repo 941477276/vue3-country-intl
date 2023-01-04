@@ -410,7 +410,7 @@ const vueCountryTool = {
       eleParent = eleParent.parentElement;
     }
   },
-  calcSelectedOption (props, countryList) {
+  /*calcSelectedOption (props, countryList) {
     // console.log('计算选中值');
     let value = props.modelValue;
     if ((value + '').length == 0) {
@@ -425,6 +425,41 @@ const vueCountryTool = {
         if (props.iso2) {
           // console.log('iso2', props.iso2, item.iso2);
           return item.iso2 == props.iso2;
+        }
+        // 一个国家只有一个手机区号的情况
+        if (item.dialCode == value) {
+          return true;
+        }
+
+        // 一个国家有多个手机区号的情况
+        if (item.dialCode == 1 && item.areaCodes) {
+          return item.areaCodes.some(areaCode => areaCode == value);
+        }
+      } else {
+        return item.iso2 == value;
+      }
+    });
+    if (!item || item.length === 0) {
+      item = {};
+    } else {
+      item = item[0] || {};
+    }
+    return item;
+  },*/
+  findCountryInfo (modelValue, type, iso2, countryList) {
+    let value = modelValue;
+    if ((value + '').length == 0) {
+      return {};
+    }
+    let isPhone = type.toLowerCase() === 'phone';
+    if ((value + '').charAt(0) === '+') {
+      value = value.substr(1);
+    }
+    let item = countryList.filter((item) => {
+      if (isPhone) {
+        if (iso2) {
+          // console.log('iso2', props.iso2, item.iso2);
+          return item.iso2 == iso2;
         }
         // 一个国家只有一个手机区号的情况
         if (item.dialCode == value) {

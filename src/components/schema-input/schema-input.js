@@ -258,7 +258,8 @@ export default {
       // 如果列表未被渲染过，则自己计算选中的项
       if(!countryListDisplay.value){
         console.log('列表未被渲染过，自己计算选中的项');
-        selected.item = vueCountryTool.calcSelectedOption(props, countriesData);
+        // selected.item = vueCountryTool.calcSelectedOption(props, countriesData);
+        selected.item = vueCountryTool.findCountryInfo(props.modelValue, props.type, props.iso2, countriesData);
       }
     }, { immediate: true });
 
@@ -290,7 +291,17 @@ export default {
       onCountryChange,
       onModelValue,
       hide,
-      show
+      show,
+      // 根据国籍编码或国家区号查找国籍信息
+      getCountryInfo (countryCodeOrAreaCode, type = 'phone', iso2) {
+        let country = vueCountryTool.findCountryInfo(countryCodeOrAreaCode, type, iso2, countriesData);
+        if (!country.iso2) {
+          return null;
+        }
+        return {
+          ...country
+        };
+      }
     }
   }
 }

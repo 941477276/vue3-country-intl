@@ -253,7 +253,8 @@ export default {
       if(newVal){
         if(!popoverDisplay.value){
           popoverDisplay.value = true;
-          selected.item = vueCountryTool.calcSelectedOption(props, countriesData);
+          // selected.item = vueCountryTool.calcSelectedOption(props, countriesData);
+          selected.item = vueCountryTool.findCountryInfo(props.modelValue, props.type, props.iso2, countriesData);
           console.log('首次计算默认选中项', selected.item);
           let timer = setTimeout(() => {
             clearTimeout(timer);
@@ -317,7 +318,17 @@ export default {
       onCountryChange,
       onModelValueChange,
       show,
-      hide
+      hide,
+      // 根据国籍编码或国家区号查找国籍信息
+      getCountryInfo (countryCodeOrAreaCode, type = 'phone', iso2) {
+        let country = vueCountryTool.findCountryInfo(countryCodeOrAreaCode, type, iso2, countriesData);
+        if (!country.iso2) {
+          return null;
+        }
+        return {
+          ...country
+        };
+      }
     };
   }
 }

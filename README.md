@@ -176,12 +176,23 @@ app.component(Vue3CountryIntl.name, Vue3CountryIntl);
 
 27： `rightOffset`：popover弹窗距离浏览器右侧距离，该值只有在小屏下有效(只在`schema=popover`模式下有效)。默认为：`20`（数据类型：Number）
 
+28： `iso2`：在`type=phone`时最好传递该属性，已避免出现区号代码为212、358、1时出现回显不正确问题，因为这些区号都有多个国家在使用
+
+
 ## 1.9、可用方法(method)
 1.`show`: 显示列表
 
 2.`hide`: 隐藏列表
 
 3.`getSelected`: 获取选中的列表项
+
+3.`getCountryInfo`: 根据国籍编码或国家区号查找国籍信息
+
+| 参数名 | 说明 | 默认值 |
+|:------|:-----|:------|
+| countryCodeOrAreaCode | 国籍编码或国籍区号 | `''` |
+| type | 值类型 | `phone` |
+| iso2 | 国籍编码 | `''` |
 
 
 ## 1.10、slot
