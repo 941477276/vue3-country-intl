@@ -1,4 +1,5 @@
 import Vue3CountryFlag from './Vue3CountryFlag.vue';
+import { version } from '../../../version';
 /*Vue3CountryFlag.install = function (Vue, svgFlagFilePath) {
   if(Vue3CountryFlag._country_flag_installed){
     return;
@@ -32,6 +33,7 @@ import Vue3CountryFlag from './Vue3CountryFlag.vue';
 
 export default {
   name: Vue3CountryFlag.name,
+  version,
   install(Vue, svgFlagFilePath) {
     if(Vue3CountryFlag._country_flag_installed){
       return;

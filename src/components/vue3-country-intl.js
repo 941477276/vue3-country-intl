@@ -4,6 +4,7 @@ import SchemaModal from './schema-modal/SchemaModal.vue';
 import {vueCountryTool} from "./vueCountryTool";
 import { reactive, ref, onMounted, watch, onUnmounted } from 'vue';
 import { countryListProps } from "./country-list/country-list-props";
+import { version } from '../../version';
 
 /*
   {
@@ -219,7 +220,7 @@ export default {
 
     return {
       onChange,
-      version: '1.0.16',
+      version,
       getSelected,
       modalVisible,
       // countryIntlValue,
