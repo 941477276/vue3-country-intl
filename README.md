@@ -180,13 +180,13 @@ app.component(Vue3CountryIntl.name, Vue3CountryIntl);
 
 
 ## 1.9、可用方法(method)
-1.`show`: 显示列表
+1. `show`: 显示列表
 
-2.`hide`: 隐藏列表
+2. `hide`: 隐藏列表
 
-3.`getSelected`: 获取选中的列表项
+3. `getSelected`: 获取选中的列表项
 
-3.`getCountryInfo`: 根据国籍编码或国家区号查找国籍信息
+3. `getCountryInfo`: 根据国籍编码或国家区号查找国籍信息
 
 | 参数名 | 说明 | 默认值 |
 |:------|:-----|:------|
@@ -196,11 +196,19 @@ app.component(Vue3CountryIntl.name, Vue3CountryIntl);
 
 
 ## 1.10、slot
-1.`vueCountryNoData`：未搜索到国家数据时显示的slot
+1. ~~`vueCountryNoData`：未搜索到国家数据时显示的slot（2.x版本后已移除）~~
+
+
+1. `noData`: 空数据插槽
+2. `countryItem`: 自定义列表项插槽
+3. `selected`: 自定义选中文本插槽
+4. `emptyData`: 空数据插槽
 
 ## 1.11、事件
-1.`onChange`: 用户手动选择列表项时触发，会传递selected、value给onChange使用
+1. ~~`onChange`: 用户手动选择列表项时触发，会传递selected、value给onChange使用（2.x版本后已移除）~~
 
+
+1. `change`: 用户手动选择列表项时事件，回调参数：`function (country)`
 
 
 # 2、vue3-country-flag

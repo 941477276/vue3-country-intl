@@ -4,10 +4,9 @@
     v-if="schema === 'input'"
     v-bind="$props"
     :model-value="modelValue"
+    :root-slots="$slots"
     @update:modelValue="onModelValueChange"
     @onChange="onChange">
-    <template #vueCountryNoData><slot name="vueCountryNoData"></slot></template>
-    <template #selected><slot name="selected"></slot></template>
   </schema-input>
 
   <schema-popover
@@ -15,12 +14,11 @@
     v-else-if="schema === 'popover'"
     v-bind="$props"
     :model-value="modelValue"
+    :root-slots="$slots"
     @update:modelValue="onModelValueChange"
     v-model:visible="modalVisible"
     @onChange="onChange">
     <slot></slot>
-    <template #vueCountryNoData><slot name="vueCountryNoData"></slot></template>
-    <template #selected><slot name="selected"></slot></template>
   </schema-popover>
 
   <schema-modal
@@ -28,11 +26,10 @@
     v-else-if="schema === 'modal'"
     v-bind="$props"
     :model-value="modelValue"
+    :root-slots="$slots"
     @update:modelValue="onModelValueChange"
     v-model:visible="modalVisible"
     @onChange="onChange">
-    <template #vueCountryNoData><slot name="vueCountryNoData"></slot></template>
-    <template #selected><slot name="selected"></slot></template>
   </schema-modal>
 </template>
 

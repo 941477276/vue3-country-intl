@@ -8,19 +8,21 @@
           :key="item.iso2 + index"
           :data-index="index"
           :data-iso="item.iso2">
-        <span class="iti-flag" :class="item.iso2"></span>
-        <span class="vue-country-name">{{useChinese ? item.nameCN : item.name}}</span>
-        <span class="vue-country-areaCode" v-show="showAreaCode">
-            +{{areaCodeView(item.dialCode, item)}}
-        </span>
-        <span class="selected-text" v-show="showSelectedText">
-          <slot name="selected">
-            {{selectedText}}
-          </slot>
-        </span>
+        <SlotRender slot-name="countryItem" :out-slots="rootSlots" :slot-data="item">
+          <span class="iti-flag" :class="item.iso2"></span>
+          <span class="vue-country-name">{{useChinese ? item.nameCN : item.name}}</span>
+          <span class="vue-country-areaCode" v-show="showAreaCode">
+              +{{areaCodeView(item.dialCode, item)}}
+          </span>
+          <span class="selected-text" v-show="showSelectedText">
+            <SlotRender slot-name="selected" :out-slots="rootSlots" :slot-data="item">
+              {{selectedText}}
+            </SlotRender>
+          </span>
+        </SlotRender>
       </li>
       <li class="vue-country-no-data" v-show="countryList.length === 0">
-        <slot name="vueCountryNoData">{{noDataText}}</slot>
+        <SlotRender slot-name="emptyData" :out-slots="rootSlots">{{noDataText}}</SlotRender>
       </li>
     </ul>
   </div>
@@ -31,11 +33,21 @@ import { reactive, ref, computed, onMounted, watch, onUnmounted } from 'vue';
 import { vueCountryTool } from '../vueCountryTool';
 import { countriesData } from './data';
 import { countryListProps } from "./country-list-props";
+import { SlotRender } from '../slot-render/SlotRender';
 
 export default {
   name: "CountryList",
   props: {
-    ...countryListProps
+    ...countryListProps,
+    rootSlots: { // 根组件的插槽
+      type: Object,
+      default () {
+        return {};
+      }
+    }
+  },
+  components: {
+    SlotRender
   },
   emits: ['update:modelValue', 'onChange'],
   setup(props, context){

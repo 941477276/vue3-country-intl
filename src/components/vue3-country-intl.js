@@ -5,6 +5,7 @@ import {vueCountryTool} from "./vueCountryTool";
 import { reactive, ref, onMounted, watch, onUnmounted } from 'vue';
 import { countryListProps } from "./country-list/country-list-props";
 import { version } from '../../version';
+import 'easyest-dropdown/vue3/es/easyest-dropdown.css';
 
 /*
   {
@@ -126,7 +127,7 @@ export default {
     });
     let onChange = (newCountry) => {
       selected.item = newCountry;
-      ctx.emit('onChange', newCountry);
+      ctx.emit('change', newCountry);
     };
     let modalVisible = ref(props.visible);
     /* let countryIntlValue = ref(props.modelValue);
