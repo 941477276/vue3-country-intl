@@ -1,18 +1,21 @@
 <template>
-  <div class="vue-country-intl-schema-popover" ref="popoverContainer" :id="id">
+  <div
+    class="vue-country-intl-schema-popover"
+    ref="popoverContainer">
     <slot></slot>
-    <teleport to="body">
-      <transition :name="transitionName">
+    <teleport :disabled="!appendToBody" to="body">
+      <EasyestDropdownTransition
+        :reference-ref="popoverContainer"
+        :will-visible="popoverWillVisible"
+        :customTransitionName="() => transitionName">
         <div
           v-if="popoverDisplay"
-          v-show="visible"
+          v-show="popoverVisible"
           class="vue-country-intl-popover"
-          :class="[{'list-on-top': !listOnBottom, 'list-on-bottom': listOnBottom}, popoverClass]"
-          ref="popover"
-          :style="{left: popoverPosition.left, top: popoverPosition.top, maxWidth: popoverMaxWidth}">
+          :class="popoverClass"
+          ref="popover">
           <div class="search-input-box">
-            <input type="text" class="search-input" autocomplete="off" v-model="searchText"
-                   :placeholder="searchInputPlaceholder">
+            <input type="text" class="search-input" autocomplete="off" v-model="searchText" :placeholder="searchInputPlaceholder">
           </div>
           <country-list
             ref="countryList"
@@ -29,14 +32,13 @@
             :only-country="onlyCountry"
             :no-data-text="noDataText"
             :use-chinese="useChinese"
+            :root-slots="rootSlots"
             @update:modelValue="onModelValueChange"
             @onChange="onCountryChange">
-            <template #vueCountryNoData><slot name="vueCountryNoData"></slot></template>
-            <template #selected><slot name="selected"></slot></template>
           </country-list>
           <div class="vue-country-intl-popover-arrow"></div>
         </div>
-      </transition>
+      </EasyestDropdownTransition>
     </teleport>
   </div>
 </template>

@@ -4,6 +4,7 @@ import { countriesData } from '../country-list/data';
 import { findCountryInfo } from '../utils';
 import { countryListProps } from "../country-list/country-list-props";
 import EasyestDropdownTransition from 'easyest-dropdown/vue3/es/index';
+import { emitOnChange, emitUpdateModelValue } from '../emits';
 
 export default {
   name: "SchemaInput",
@@ -63,7 +64,7 @@ export default {
       default: true
     }
   },
-  emits: ['update:modelValue', 'onChange'],
+  emits: [emitUpdateModelValue, emitOnChange],
   setup(props, ctx){
     let selected = reactive({
       item: {}

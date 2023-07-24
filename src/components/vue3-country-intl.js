@@ -5,6 +5,7 @@ import {vueCountryTool} from "./vueCountryTool";
 import { reactive, ref, onMounted, watch, onUnmounted } from 'vue';
 import { countryListProps } from "./country-list/country-list-props";
 import { version } from '../../version';
+import { emitUpdateModelValue, emitUpdateVisible } from './emits';
 import 'easyest-dropdown/vue3/es/easyest-dropdown.css';
 
 /*
@@ -121,7 +122,7 @@ export default {
       default: true
     }
   },
-  emits: ['update:modelValue', 'update:visible', 'onChange'],
+  emits: [emitUpdateModelValue, emitUpdateVisible, 'change'],
   setup(props, ctx){
     if(!window._vueCountryIntl_count){
       window._vueCountryIntl_count = 1;

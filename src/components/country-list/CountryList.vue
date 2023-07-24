@@ -34,6 +34,7 @@ import { vueCountryTool } from '../vueCountryTool';
 import { countriesData } from './data';
 import { countryListProps } from "./country-list-props";
 import { SlotRender } from '../slot-render/SlotRender';
+import { emitUpdateModelValue, emitOnChange } from '../emits';
 
 export default {
   name: "CountryList",
@@ -49,7 +50,7 @@ export default {
   components: {
     SlotRender
   },
-  emits: ['update:modelValue', 'onChange'],
+  emits: [emitUpdateModelValue, emitOnChange],
   setup(props, context){
     console.log('context', context);
     // 选中项
