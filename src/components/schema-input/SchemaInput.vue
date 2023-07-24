@@ -36,7 +36,7 @@
       <label class="dropdown-flag"></label>
       <div class="prevent-click"></div>
     </div>
-    <teleport to="body" :disabled="static">
+    <teleport to="body" :disabled="static || !appendToBody">
       <component
         :is="!static ? 'EasyestDropdownTransition' : 'div'"
         :will-visible="countryListWillShow"

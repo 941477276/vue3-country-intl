@@ -115,6 +115,10 @@ export default {
     transitionName: { // 过度效果名称
       type: [String, undefined],
       default: undefined
+    },
+    appendToBody: { // 是否将列表插入到body中
+      type: Boolean,
+      default: true
     }
   },
   emits: ['update:modelValue', 'update:visible', 'onChange'],

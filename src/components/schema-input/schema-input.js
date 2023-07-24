@@ -57,6 +57,10 @@ export default {
       default () {
         return {};
       }
+    },
+    appendToBody: { // 是否将列表插入到body中
+      type: Boolean,
+      default: true
     }
   },
   emits: ['update:modelValue', 'onChange'],

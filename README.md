@@ -178,6 +178,8 @@ app.component(Vue3CountryIntl.name, Vue3CountryIntl);
 
 28： `iso2`：在`type=phone`时最好传递该属性，已避免出现区号代码为212、358、1时出现回显不正确问题，因为这些区号都有多个国家在使用
 
+29： `appendToBody`：是否将列表插入到body中。默认为`true`（数据类型：Boolean）
+
 
 ## 1.9、可用方法(method)
 1. `show`: 显示列表
