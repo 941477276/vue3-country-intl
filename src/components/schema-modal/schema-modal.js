@@ -43,6 +43,16 @@ export default {
     transitionName: { // 过度效果名称
       type: String,
       default: 'fade'
+    },
+    rootSlots: { // 根组件的插槽
+      type: Object,
+      default () {
+        return {};
+      }
+    },
+    appendToBody: { // 是否将列表插入到body中
+      type: Boolean,
+      default: true
     }
   },
   emits: [emitUpdateVisible, emitUpdateModelValue, emitOnChange],
@@ -131,7 +141,6 @@ export default {
 
 
     return {
-      id: ref('vue_country_intl-' + (window._vueCountryIntl_count++)),
       selected,
       searchText,
       modalVisible,

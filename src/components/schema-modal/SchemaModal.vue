@@ -1,5 +1,5 @@
 <template>
-  <teleport to="body">
+  <teleport :disabled="!appendToBody" to="body">
     <transition :name="transitionName">
       <div class="vue-country-intl-modal" ref="intlModal" :class="modalClass" :style="{zIndex: listZIndex != 0 ? listZIndex : ''}" v-if="modalDisplay" v-show="modalVisible">
         <div class="country-modal-content">
@@ -25,10 +25,9 @@
             :only-country="onlyCountry"
             :no-data-text="noDataText"
             :use-chinese="useChinese"
+            :root-slots="rootSlots"
             @onChange="onCountryChange"
             @update:modelValue="onModelValueChange">
-            <template #vueCountryNoData><slot name="vueCountryNoData"></slot></template>
-            <template #selected><slot name="selected"></slot></template>
           </country-list>
         </div>
       </div>
