@@ -1,9 +1,10 @@
 import { reactive, ref, watch, onBeforeUnmount, onUnmounted } from 'vue';
 import CountryList from '../country-list/CountryList.vue';
-import { vueCountryTool } from '../vueCountryTool';
 import { countriesData } from '../country-list/data';
 import { useLockScroll } from '../hooks/useLockScroll';
 import { countryListProps } from "../country-list/country-list-props";
+import { findCountryInfo } from '../utils';
+import { emitUpdateVisible, emitUpdateModelValue, emitOnChange } from '../emits';
 
 export default {
   name: "SchemaModal",
@@ -44,7 +45,7 @@ export default {
       default: 'fade'
     }
   },
-  emits: ['update:modelValue', 'onChange', 'update:visible'],
+  emits: [emitUpdateVisible, emitUpdateModelValue, emitOnChange],
   setup (props, ctx) {
     let selected = reactive({
       item: {}
@@ -106,8 +107,7 @@ export default {
       if(newVal){
         if(!modalDisplay.value){
           modalDisplay.value = true;
-          // selected.item = vueCountryTool.calcSelectedOption(props, countriesData);
-          selected.item = vueCountryTool.findCountryInfo(props.modelValue, props.type, props.iso2, countriesData);
+          selected.item = findCountryInfo(props.modelValue, props.type, props.iso2, countriesData);
           let timer = setTimeout(() => {
             clearTimeout(timer);
             show();
@@ -144,7 +144,7 @@ export default {
       hide,
       // 根据国籍编码或国家区号查找国籍信息
       getCountryInfo (countryCodeOrAreaCode, type = 'phone', iso2) {
-        let country = vueCountryTool.findCountryInfo(countryCodeOrAreaCode, type, iso2, countriesData);
+        let country = findCountryInfo(countryCodeOrAreaCode, type, iso2, countriesData);
         if (!country.iso2) {
           return null;
         }

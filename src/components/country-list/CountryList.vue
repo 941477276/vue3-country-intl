@@ -30,11 +30,11 @@
 
 <script>
 import { reactive, ref, computed, onMounted, watch, onUnmounted } from 'vue';
-import { vueCountryTool } from '../vueCountryTool';
 import { countriesData } from './data';
 import { countryListProps } from "./country-list-props";
 import { SlotRender } from '../slot-render/SlotRender';
 import { emitUpdateModelValue, emitOnChange } from '../emits';
+import { findCountryInfo, getIndex } from '../utils';
 
 export default {
   name: "CountryList",
@@ -68,7 +68,7 @@ export default {
       // 根据国家名称或国家代码或国家区号过滤只显示的国家
       if(onlyCountry.length > 0){
         countries = countries.filter(country => {
-          let index = vueCountryTool.getIndex(onlyCountry, (item) => {
+          let index = getIndex(onlyCountry, (item) => {
             let dialCode = item + '';
             if(dialCode.charAt(0) === '+'){
               dialCode = dialCode.replace('+', '');
@@ -83,7 +83,7 @@ export default {
       // 根据国家名称或国家代码或国家区号过滤禁用的国家
       if(disableCountry.length > 0){
         countries = countries.filter(country => {
-          let index = vueCountryTool.getIndex(disableCountry, (item) => {
+          let index = getIndex(disableCountry, (item) => {
             let dialCode = item + '';
             if(dialCode.charAt(0) === '+'){
               dialCode = dialCode.replace('+', '');
@@ -241,7 +241,7 @@ export default {
       }
       // let cur = calcSelectedOption();
       // let cur = vueCountryTool.calcSelectedOption(props, countryList.value);
-      let cur = vueCountryTool.findCountryInfo(props.modelValue, props.type, props.iso2, countryList.value);
+      let cur = findCountryInfo(props.modelValue, props.type, props.iso2, countryList.value);
       console.log('执行watch了');
       if(!cur){
         return;

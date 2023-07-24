@@ -13,8 +13,8 @@
               <div>Default effect (select phone area code)</div>
             </div>
           </h3>
-          <VueCountryIntl v-model="schemaInputData.default" @onChange="onChange">
-            <template #vueCountryNoData><h1>没有找到该国籍！</h1></template>
+          <VueCountryIntl v-model="schemaInputData.default" @change="onChange">
+            <template #emptyData><h1>没有找到该国籍！</h1></template>
             <template #selected>(๑*◡*๑)<span style="margin-left: 5px;font-size: 1.3em;">👍</span></template>
           </VueCountryIntl>
           <h5 class="mt-5">区号代码：{{ schemaInputData.default || '--' }}</h5>
@@ -28,7 +28,7 @@
             </div>
           </h3>
           <VueCountryIntl v-model="schemaInputData.default" :use-chinese="true">
-            <template slot="vueCountryNoData"><h1>没有找到该国籍！</h1></template>
+            <template slot="emptyData"><h1>没有找到该国籍！</h1></template>
           </VueCountryIntl>
           <h5 class="mt-5">区号代码：{{ schemaInputData.default || '--' }}</h5>
           <div class="hr"></div>
@@ -102,8 +102,8 @@
                           only-country="+86,United States,Japan (日本),hk"></VueCountryIntl>
           <h5 class="mt-5">区号：{{ schemaInputData.onlyCountry || '--' }}</h5>
           <div class="hr"></div>
-
         </div>
+
         <div class="center">
           <h1>2、模式(model)：scheme = popover</h1>
 
@@ -117,7 +117,7 @@
           <VueCountryIntl schema="popover" popover-class="popover-class1111" v-model="schemaPopoverData.default"
                           v-model:visible="schemaPopoverData.defaultVisible">
             <button type="button" @click="schemaPopoverData.defaultVisible = true">选择手机区号</button>
-            <template slot="vueCountryNoData"><h1>没有找到该国籍！</h1></template>
+            <template slot="emptyData"><h1>没有找到该国籍！</h1></template>
           </VueCountryIntl>
           <h5 class="mt-5">区号：{{ schemaPopoverData.default || '--' }}</h5>
           <div class="hr"></div>
@@ -132,7 +132,7 @@
           <VueCountryIntl schema="popover" popover-class="popover-class1111" v-model="schemaPopoverData.default"
                           v-model:visible="schemaPopoverData.defaultVisible2">
             <button type="button" @click="schemaPopoverData.defaultVisible2 = true">选择手机区号</button>
-            <template slot="vueCountryNoData"><h1>没有找到该国籍！</h1></template>
+            <template slot="emptyData"><h1>没有找到该国籍！</h1></template>
           </VueCountryIntl>
           <h5 class="mt-5">区号：{{ schemaPopoverData.default || '--' }}</h5>
           <div class="hr"></div>
@@ -150,7 +150,7 @@
           <button type="button" @click="schemaModalVisible.default = true">选择手机区号</button>
           <VueCountryIntl schema="modal" modal-class="modal-class" :listZIndex="5000"
                           v-model:visible="schemaModalVisible.default" v-model="schemaModal.default">
-            <template slot="vueCountryNoData"><h1>没有找到该国籍！</h1></template>
+            <template slot="emptyData"><h1>没有找到该国籍！</h1></template>
           </VueCountryIntl>
           <h5 class="mt-5">区号：{{ schemaModal.default || '--' }}</h5>
         </div>

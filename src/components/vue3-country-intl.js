@@ -1,7 +1,7 @@
 import SchemaInput from './schema-input/SchemaInput.vue';
 import SchemaPopover from './schema-popover/SchemaPopover.vue';
 import SchemaModal from './schema-modal/SchemaModal.vue';
-import {vueCountryTool} from "./vueCountryTool";
+import { findCountryInfo, termianl } from './utils';
 import { reactive, ref, onMounted, watch, onUnmounted } from 'vue';
 import { countryListProps } from "./country-list/country-list-props";
 import { version } from '../../version';
@@ -208,7 +208,7 @@ export default {
     onMounted(() => {
       let classList = document.body.classList;
       // 解决ios无法点击问题
-      if(vueCountryTool.termianl().ios && !classList.contains('vue-country-ios')){
+      if(termianl().ios && !classList.contains('vue-country-ios')){
         classList.add('vue-country-ios');
       }
     });
