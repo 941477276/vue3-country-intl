@@ -67,6 +67,7 @@
   ],
   "files": [
     "lib",
+    "package.json",
     "README.md",
     "README-CN.md"
   ]
