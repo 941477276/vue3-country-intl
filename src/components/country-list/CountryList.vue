@@ -62,9 +62,13 @@ export default {
     // 数据列表
     let countryList = computed(() => {
       let searchText = props.searchText || '';
-      let countries = countriesData;
+      let countries = [...countriesData];
       let disableCountry = typeof props.disableCountry === 'string' ? props.disableCountry.split(',') : props.disableCountry;
       let onlyCountry = typeof props.onlyCountry === 'string' ? props.onlyCountry.split(',') : props.onlyCountry;
+      let {
+        sort,
+        filter
+      } = props
       // 根据国家名称或国家代码或国家区号过滤只显示的国家
       if(onlyCountry.length > 0){
         countries = countries.filter(country => {
@@ -92,6 +96,12 @@ export default {
           });
           return index === -1;
         });
+      }
+      if (typeof filter == 'function') {
+        countries = countries.filter(filter);
+      }
+      if (typeof sort == 'function') {
+        countries.sort(sort);
       }
       if (!props.searchAble || searchText.length === 0) {
         return countries;

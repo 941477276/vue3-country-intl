@@ -65,6 +65,8 @@
           :no-data-text="noDataText"
           :use-chinese="useChinese"
           :root-slots="rootSlots"
+          :sort="sort"
+          :filter="filter"
           @onChange="onCountryChange"
           @update:modelValue="onModelValue">
         </country-list>

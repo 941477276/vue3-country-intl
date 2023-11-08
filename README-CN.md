@@ -180,6 +180,10 @@ app.component(Vue3CountryIntl.name, Vue3CountryIntl);
 
 29： `appendToBody`：是否将列表插入到body中。默认为`true`（数据类型：Boolean）
 
+30： `filter`：排序函数，与`Array.filter`中的回调函数一致。默认为`null`（数据类型：Function）`2.0.2新增`
+
+31： `sort`：排序函数，与`Array.sort`中的回调函数一致。默认为`null`（数据类型：Function）`2.0.2新增`
+
 
 ## 1.9、可用方法(method)
 1. `show`: 显示列表

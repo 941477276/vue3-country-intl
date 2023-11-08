@@ -9,11 +9,11 @@
           <h3 class="mb-10">
             <div class="pull-left">1、</div>
             <div class="overflow">
-              <div class="mb-5">默认效果(选择手机区号)</div>
-              <div>Default effect (select phone area code)</div>
+              <div class="mb-5">默认效果(选择手机区号&排序)</div>
+              <div>Default effect (select phone area code & sort)</div>
             </div>
           </h3>
-          <VueCountryIntl v-model="schemaInputData.default" @change="onChange">
+          <VueCountryIntl v-model="schemaInputData.default" @change="onChange" :sort="sort">
             <template #emptyData><h1>没有找到该国籍！</h1></template>
             <template #selected>(๑*◡*๑)<span style="margin-left: 5px;font-size: 1.3em;">👍</span></template>
           </VueCountryIntl>
@@ -110,12 +110,12 @@
           <h3 class="mb-10">
             <div class="pull-left">1、</div>
             <div class="overflow">
-              <div class="mb-5">默认效果(选择手机区号)</div>
-              <div>Default effect (select phone area code)</div>
+              <div class="mb-5">默认效果(选择手机区号&排序)</div>
+              <div>Default effect (select phone area code & sort)</div>
             </div>
           </h3>
           <VueCountryIntl schema="popover" popover-class="popover-class1111" v-model="schemaPopoverData.default"
-                          v-model:visible="schemaPopoverData.defaultVisible">
+                          v-model:visible="schemaPopoverData.defaultVisible" :sort="sort">
             <button type="button" @click="schemaPopoverData.defaultVisible = true">选择手机区号</button>
             <template slot="emptyData"><h1>没有找到该国籍！</h1></template>
           </VueCountryIntl>
@@ -259,6 +259,11 @@ export default {
       schemaModalVisible,
       schemaModal,
       onChange,
+      sort (country) {
+        if (['cn', 'hk', 'tw'].includes(country.iso2)) {
+          return -1;
+        }
+      },
 
       svgPathObj
     };

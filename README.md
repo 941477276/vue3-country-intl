@@ -181,6 +181,10 @@ Effect:
 
 29: `appendToBody`: Whether to insert the list into the body. Defaults to `true` (data type: Boolean)
 
+30: `filter`: Sorting function, consistent with the callback function in `Array.filter`. Default is `null` (data type: Function) `new in 2.0.2`
+
+31: `sort`: Sorting function, consistent with the callback function in `Array.sort`. Default is `null` (data type: Function) `new in 2.0.2`
+
 
 ## 1.9、可用方法(method)
 1. `show`: show list
