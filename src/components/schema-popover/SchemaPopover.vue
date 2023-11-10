@@ -35,6 +35,7 @@
             :root-slots="rootSlots"
             :sort="sort"
             :filter="filter"
+            :transform="transform"
             @update:modelValue="onModelValueChange"
             @onChange="onCountryChange">
           </country-list>

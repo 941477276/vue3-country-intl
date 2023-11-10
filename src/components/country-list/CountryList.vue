@@ -67,7 +67,8 @@ export default {
       let onlyCountry = typeof props.onlyCountry === 'string' ? props.onlyCountry.split(',') : props.onlyCountry;
       let {
         sort,
-        filter
+        filter,
+        transform
       } = props
       // 根据国家名称或国家代码或国家区号过滤只显示的国家
       if(onlyCountry.length > 0){
@@ -102,6 +103,9 @@ export default {
       }
       if (typeof sort == 'function') {
         countries.sort(sort);
+      }
+      if (typeof transform == 'function') {
+        countries = transform(countries);
       }
       if (!props.searchAble || searchText.length === 0) {
         return countries;
