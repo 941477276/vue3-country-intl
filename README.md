@@ -185,7 +185,7 @@ Effect:
 
 31: `sort`: Sorting function, consistent with the callback function in `Array.sort`. Default is `null` (data type: Function) `new in 2.0.2`
 
-32: `transform`: Data processing function, you can use this function to deeply customize the data list, such as sorting, filtering, pinning, etc. Default is `null` (data type: Function) `new in 2.0.3`
+32: `transform`: Data processing function, you can use this function to deeply customize the data list, such as sorting, filtering, pinning, etc. The return value is a list of processed pairs. Default is `null` (data type: Function) `new in 2.0.3`
 
 ## 1.9、可用方法(method)
 1. `show`: show list

@@ -184,7 +184,7 @@ app.component(Vue3CountryIntl.name, Vue3CountryIntl);
 
 31： `sort`：排序函数，与`Array.sort`中的回调函数一致。默认为`null`（数据类型：Function）`2.0.2新增`
 
-32： `transform`：数据处理函数，你可以通过该函数对数据列表进行深度定制，如排序、过滤、置顶等。默认为`null`（数据类型：Function）`2.0.3新增`
+32： `transform`：数据处理函数，你可以通过该函数对数据列表进行深度定制，如排序、过滤、置顶等；返回值为处理过后对列表。默认为`null`（数据类型：Function）`2.0.3新增`
 
 
 ## 1.9、可用方法(method)
