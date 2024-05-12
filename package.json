@@ -1,7 +1,7 @@
 {
   "name": "vue3-country-intl",
   "description": "A vue3-based mobile phone area code selection, nationality selection component（一个基于vue3的手机区号选择、国籍选择组件）",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "license": "MIT",
   "author": "hearth_learning_money",
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/941477276/vue3-country-intl#readme",
   "dependencies": {
-    "easyest-dropdown": "^1.0.0"
+    "easyest-dropdown": "^1.0.3"
   },
   "devDependencies": {
     "@babel/core": "7.14.3",
@@ -34,6 +34,7 @@
     "@rollup/plugin-replace": "2.4.2",
     "@vitejs/plugin-vue": "1.2.2",
     "@vue/compiler-sfc": "^3.0.5",
+    "ant-design-vue": "^4.2.1",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.6.0",
     "esbuild": "^0.14.5",

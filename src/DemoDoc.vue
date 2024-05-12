@@ -34,6 +34,55 @@
           <div class="hr"></div>
 
           <h3 class="mb-10">
+            <div class="pull-left">1-3、</div>
+            <div class="overflow">
+              <div class="mb-5">在弹窗中</div>
+              <div>In modal</div>
+            </div>
+          </h3>
+          <button type="button" @click="modalVisible = true">显示弹窗(show dialog)</button>
+          <Modal v-model:open="modalVisible" title="在弹窗中">
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <VueCountryIntl v-model="schemaInputData.default" :use-chinese="true">
+              <template slot="emptyData"><h1>没有找到该国籍！</h1></template>
+            </VueCountryIntl>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+            <p>Ant design vue!</p>
+          </Modal>
+
+          <h5 class="mt-5">区号代码：{{ schemaInputData.default || '--' }}</h5>
+          <div class="hr"></div>
+
+          <h3 class="mb-10">
             <div class="pull-left">2、</div>
             <div class="overflow">
               <div class="mb-5">选择国籍</div>
@@ -188,7 +237,9 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
+import { Modal } from 'ant-design-vue';
+import 'ant-design-vue/es/modal/style/index';
 import VueCountryIntl from './components/Vue3CountryIntl.vue';
 // import VueCountryIntl from '../lib/vue3CountryIntl.esm.min';
 // import '../lib/vue3-country-intl.css';
@@ -222,6 +273,7 @@ export default {
   name: 'DemoDoc',
   components: {
     VueCountryIntl,
+    Modal,
     // Vue3CountryFlag
   },
   setup (props, ctx) {
@@ -253,11 +305,13 @@ export default {
     let svgPathObj = reactive({
       ...svgPaths
     })
+    let modalVisible = ref(false);
     return {
       schemaInputData,
       schemaPopoverData,
       schemaModalVisible,
       schemaModal,
+      modalVisible,
       onChange,
       sort (country) {
         if (['cn', 'hk', 'tw'].includes(country.iso2)) {

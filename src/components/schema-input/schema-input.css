@@ -105,7 +105,7 @@
 .vue-country-intl-inputer-dropdown{
     position: absolute;
     /*top: 100%;*/
-    z-index: 999;
+    z-index: 99999;
 }
 .vue-country-intl-inputer.is-static .vue-country-intl-inputer-dropdown{
     position: static;
