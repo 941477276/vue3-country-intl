@@ -211,6 +211,7 @@ Effect:
 2. `countryItem`: custom list item slot
 3. `selected`: custom selected text slot
 4. `emptyData`: empty data slot
+5. `customInputLabel`：The contents of the input box, is only valid if `schema=input`
 
 ## 1.11. Events
 1. ~~`onChange`: Triggered when the user manually selects a list item, and will pass selected and value to onChange (removed after version 2.x)~~

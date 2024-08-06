@@ -211,6 +211,7 @@ app.component(Vue3CountryIntl.name, Vue3CountryIntl);
 2. `countryItem`: 自定义列表项插槽
 3. `selected`: 自定义选中文本插槽
 4. `emptyData`: 空数据插槽
+5. `customInputLabel`：输入框的显示的内容，仅在`schema=input`时有效
 
 ## 1.11、事件
 1. ~~`onChange`: 用户手动选择列表项时触发，会传递selected、value给onChange使用（2.x版本后已移除）~~

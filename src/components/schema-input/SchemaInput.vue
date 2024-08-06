@@ -31,7 +31,9 @@
         :readonly="isIos && deviceWidth < 992 && iosMobileReadonly">
       <label class="country-intl-label">
         <span class="iti-flag" :class="selected.item.iso2" v-show="showLabelImg"></span>
-        <span>{{viewText}}</span>
+        <SlotRender slot-name="customInputLabel" :out-slots="rootSlots" :slot-data="Object.assign({}, selected.item)">
+          <span class="country-intl-label-text">{{viewText}}</span>
+        </SlotRender>
       </label>
       <label class="dropdown-flag"></label>
       <div class="prevent-click"></div>

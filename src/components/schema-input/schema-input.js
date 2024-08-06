@@ -1,5 +1,6 @@
 import { reactive, ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import CountryList from '../country-list/CountryList.vue';
+import { SlotRender } from '../slot-render/SlotRender';
 import { countriesData } from '../country-list/data';
 import { findCountryInfo } from '../utils';
 import { countryListProps } from "../country-list/country-list-props";
@@ -10,7 +11,8 @@ export default {
   name: "SchemaInput",
   components: {
     'country-list': CountryList,
-    EasyestDropdownTransition
+    EasyestDropdownTransition,
+    SlotRender
   },
   inheritAttrs: false,
   props: {

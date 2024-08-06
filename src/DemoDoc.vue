@@ -83,6 +83,22 @@
           <div class="hr"></div>
 
           <h3 class="mb-10">
+            <div class="pull-left">1-4、</div>
+            <div class="overflow">
+              <div class="mb-5">自定义输入框label</div>
+              <div>Customize the input label</div>
+            </div>
+          </h3>
+          <VueCountryIntl v-model="schemaInputData.default" :use-chinese="true">
+            <template slot="emptyData"><h1>没有找到该国籍！</h1></template>
+            <template #customInputLabel="country">
+              <strong>{{ country.name }}-{{ country.dialCode }} (中文：{{ country.nameCN }})</strong>
+            </template>
+          </VueCountryIntl>
+          <h5 class="mt-5">区号代码：{{ schemaInputData.default || '--' }}</h5>
+          <div class="hr"></div>
+
+          <h3 class="mb-10">
             <div class="pull-left">2、</div>
             <div class="overflow">
               <div class="mb-5">选择国籍</div>
