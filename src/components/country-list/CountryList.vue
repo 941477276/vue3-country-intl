@@ -112,6 +112,10 @@ export default {
       }
       // 解决用户输入"+"作为搜索条件时，而导致new RegExp(searchText, 'gi')时将"+"认为是需要一个或多个字符
       searchText = searchText.replace('+', '\\+');
+      let taiwan = '台灣'
+      let aomen = '澳門'
+      searchText = searchText.replace('台湾', taiwan).replace('臺灣', taiwan).replace('澳门', aomen)
+
       // 按搜索条件进行查询
       countries =  countries.filter(item => {
         let reg = new RegExp(searchText, 'gi');
