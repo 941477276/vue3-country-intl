@@ -64,6 +64,11 @@ export default {
     appendToBody: { // 是否将列表插入到body中
       type: Boolean,
       default: true
+    },
+    // 是否显示清空按钮
+    clearable: {
+      type: Boolean,
+      default: false
     }
   },
   emits: [emitUpdateModelValue, emitOnChange],
@@ -187,14 +192,23 @@ export default {
     };
 
     watch(() => props.modelValue, (newVal) => {
-      console.log('countryListDisplay', countryListDisplay.value);
+      // console.log('countryListDisplay', countryListDisplay.value);
       // 如果列表未被渲染过，则自己计算选中的项
       if(!countryListDisplay.value){
-        console.log('列表未被渲染过，自己计算选中的项');
+        // console.log('列表未被渲染过，自己计算选中的项');
         // selected.item = vueCountryTool.calcSelectedOption(props, countriesData);
         selected.item = findCountryInfo(props.modelValue, props.type, props.iso2, countriesData);
       }
     }, { immediate: true });
+
+    // 清空选中项
+    const clear = function () {
+      if (!props.clearable || props.disabled) {
+        return;
+      }
+      onCountryChange({});
+      onModelValue('');
+    };
 
     onMounted(() => {
       if(props.static){
@@ -221,6 +235,7 @@ export default {
       onModelValue,
       hide,
       show,
+      clear,
       // 根据国籍编码或国家区号查找国籍信息
       getCountryInfo (countryCodeOrAreaCode, type = 'phone', iso2) {
         let country = findCountryInfo(countryCodeOrAreaCode, type, iso2, countriesData);

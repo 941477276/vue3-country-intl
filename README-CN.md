@@ -186,6 +186,7 @@ app.component(Vue3CountryIntl.name, Vue3CountryIntl);
 
 32： `transform`：数据处理函数，你可以通过该函数对数据列表进行深度定制，如排序、过滤、置顶等；返回值为处理过后对列表。默认为`null`（数据类型：Function）`2.0.3新增`
 
+33： `clearable`：是否可清空，值为`true`将会显示清空按钮。默认为`false`（数据类型：Boolean）`2.0.7新增`
 
 ## 1.9、可用方法(method)
 1. `show`: 显示列表
@@ -212,6 +213,7 @@ app.component(Vue3CountryIntl.name, Vue3CountryIntl);
 3. `selected`: 自定义选中文本插槽
 4. `emptyData`: 空数据插槽
 5. `customInputLabel`：输入框的显示的内容，仅在`schema=input`时有效
+6. `clear`: 输入框右侧清空按钮插槽，仅在`schema=input`时有效
 
 ## 1.11、事件
 1. ~~`onChange`: 用户手动选择列表项时触发，会传递selected、value给onChange使用（2.x版本后已移除）~~

@@ -167,6 +167,17 @@
                           only-country="+86,United States,Japan (日本),hk"></VueCountryIntl>
           <h5 class="mt-5">区号：{{ schemaInputData.onlyCountry || '--' }}</h5>
           <div class="hr"></div>
+
+          <h3 class="mb-10">
+            <div class="pull-left">9、</div>
+            <div class="overflow">
+              <div class="mb-5">可清空</div>
+              <div>clearable</div>
+            </div>
+          </h3>
+          <VueCountryIntl v-model="schemaInputData.country9" clearable></VueCountryIntl>
+          <h5 class="mt-5">区号：{{ schemaInputData.country9 || '--' }}</h5>
+          <div class="hr"></div>
         </div>
 
         <div class="center">
@@ -301,6 +312,7 @@ export default {
       staticLayout: '86',
       disableCountry: '',
       onlyCountry: '',
+      country9: 86,
       selected: {}
     });
     let schemaPopoverData = reactive({

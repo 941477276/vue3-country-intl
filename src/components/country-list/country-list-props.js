@@ -82,5 +82,9 @@ export const countryListProps = {
   transform: {
     type: Function,
     default: null
+  },
+  // 输入框的name值
+  name: {
+    type: String
   }
 };

@@ -120,6 +120,11 @@ export default {
     appendToBody: { // 是否将列表插入到body中
       type: Boolean,
       default: true
+    },
+    // 是否显示清空按钮
+    clearable: {
+      type: Boolean,
+      default: false
     }
   },
   emits: [emitUpdateModelValue, emitUpdateVisible, 'change'],

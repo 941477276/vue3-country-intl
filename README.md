@@ -187,6 +187,8 @@ Effect:
 
 32: `transform`: Data processing function, you can use this function to deeply customize the data list, such as sorting, filtering, pinning, etc. The return value is a list of processed pairs. Default is `null` (data type: Function) `new in 2.0.3`
 
+33: `clearable`: Whether it can be cleared. If the value is `true`, the clear button will be displayed. The default value is `false` (data type: Boolean) `New in 2.0.7`
+
 ## 1.9、可用方法(method)
 1. `show`: show list
 
@@ -212,6 +214,7 @@ Effect:
 3. `selected`: custom selected text slot
 4. `emptyData`: empty data slot
 5. `customInputLabel`：The contents of the input box, is only valid if `schema=input`
+6. `clear`: Clear the button slot on the right side of the input box. Only valid when `schema=input`
 
 ## 1.11. Events
 1. ~~`onChange`: Triggered when the user manually selects a list item, and will pass selected and value to onChange (removed after version 2.x)~~

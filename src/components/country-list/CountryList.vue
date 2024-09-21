@@ -283,6 +283,12 @@ export default {
       }
     }, { immediate: true });
 
+    // 清空选中项
+    const clear = function () {
+      context.emit('update:modelValue', '');
+      context.emit('onChange', {}, '');
+    };
+
     onMounted(() => {
       if(props.type == 'phone' && (props.iso2 + '').length == 0){
         console.warn('当type=phone时最好传递iso2属性，否则当区号代码为212或358时会出现选择不正确问题！');
@@ -296,6 +302,7 @@ export default {
     return {
       selected,
       countryList,
+      clear,
       areaCodeView,
       countryItemClickEvt
     };
