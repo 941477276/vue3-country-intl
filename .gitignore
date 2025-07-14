@@ -12,3 +12,4 @@ vite.config.js
 .DS_Store
 dist-ssr
 *.local
+version.js
