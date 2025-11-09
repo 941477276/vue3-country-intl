@@ -189,11 +189,12 @@ export default {
       let result = '';
       if(isPhone){
         // 一个国家有多个手机区号
-        if(selectedInner.dialCode == 1 && selectedInner.areaCodes) {
+        /* if(selectedInner.dialCode == 1 && selectedInner.areaCodes) {
           result = selectedInner.areaCodes[0];
         }else {
           result = selectedInner.dialCode || '';
-        }
+        } */
+        result = selectedInner.dialCode || '';
       }else{
         result = selectedInner.iso2 || '';
       }
@@ -247,7 +248,8 @@ export default {
       // 有些国家的手机区号会有多个值
       if(dialCode == 1 && country.areaCodes){
         let otherEnableCodes = country.areaCodes.slice(0, 5);
-        return (country.areaCodes[0] + ` [${otherEnableCodes.join(', ')}]`);
+        otherEnableCodes.unshift(1);
+        return (dialCode + ` [${otherEnableCodes.join(', ')}]`);
       }
       return dialCode;
     }
@@ -270,12 +272,13 @@ export default {
         let isPhone = props.type.toLowerCase() === 'phone';
         let result = '';
         if(isPhone){
-          // 一个国家有多个手机区号
+          /* // 一个国家有多个手机区号
           if(cur.dialCode == 1 && cur.areaCodes) {
             result = cur.areaCodes[0];
           }else {
             result = cur.dialCode || '';
-          }
+          } */
+          result = cur.dialCode || '';
         }else{
           result = cur.iso2 || '';
         }
@@ -291,7 +294,7 @@ export default {
 
     onMounted(() => {
       if(props.type == 'phone' && (props.iso2 + '').length == 0){
-        console.warn('当type=phone时最好传递iso2属性，否则当区号代码为212或358时会出现选择不正确问题！');
+        console.warn('type="phone" requires iso2 parameter for accurate country mapping. Codes 212 and 358 are known to resolve incorrectly without explicit iso2 values.（当type=phone时最好传递iso2属性，否则当区号代码为212或358时会出现选择不正确问题！）');
       }
     });
 
