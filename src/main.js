@@ -2,8 +2,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
-import Vue3CountryFlag from '../lib/vue3CountryFlag.esm.min';
+// import Vue3CountryFlag from '../lib/vue3CountryFlag.esm.min';
 // import Vue3CountryFlag from 'vue3-country-flag';
+import Vue3CountryFlag from './components/country-flag/index';
 
 /*import VueCountryIntl from '../lib/vue3CountryIntl.js';
 import '../lib/vue3CountryIntl.css';
@@ -14,8 +15,12 @@ const app = createApp(App);
 
 // app.component('VueCountryIntl', VueCountryIntl)
 // 引入各个国籍国旗的svg文件
-let svgFilesCtx = require.context('../lib/country-flag-svgs', true, /\.svg$/);
-app.use(Vue3CountryFlag, svgFilesCtx);
+/* let svgFilesCtx = require.context('../lib/country-flag-svgs', true, /\.svg$/);
+app.use(Vue3CountryFlag, svgFilesCtx); */
+const svgFiles = import.meta.glob('./components/country-flag/flags/*.svg', { eager: true });
+console.log('svgFiles3333', svgFiles);
+app.use(Vue3CountryFlag, svgFiles);
+
 /*// 获取svg文件名称正则
 let reg = /(\w+)(\.\w*)*\.svg$/;
 console.log('svgFiles', svgFilesCtx);

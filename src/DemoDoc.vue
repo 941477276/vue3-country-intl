@@ -276,14 +276,14 @@ console.log('VueCountryIntl', VueCountryIntl);
 // console.log('Vue3CountryFlag', Vue3CountryFlag);
 
 // 批量导入国籍旗帜svg文件
-const svgFiles = import.meta.globEager('./components/country-flag/flags/*.svg');
+const svgFiles = import.meta.glob('./components/country-flag/flags/*.svg', { eager: true });
 console.log('svgFiles', svgFiles);
 // 获取svg文件名称正则
 const reg = /(\w+)(\.\w*)*\.svg$/;
 console.log('svgFiles', svgFiles);
 const svgPaths = Object.keys(svgFiles).reduce((res, key) => {
   let svgPath = svgFiles[key].default;
-  let matched = svgPath.match(reg);
+  let matched = key.match(reg);
   // console.log('svgPath', svgPath, matched[1]);
   if(matched){
     let countryIso2 = matched[1];
