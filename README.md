@@ -259,6 +259,10 @@ const app = createApp(..);
 // import svg icons
 let flagFilePath = require.context('vue3-country-intl/lib/country-flag-svgs', true, /\.svg$/);
 app.use(VueCountryFlag, flagFilePath);
+
+// import svg icons use vite
+// let flagFilePath = import.meta.glob('vue3-country-intl/lib/country-flag-svgs/*.svg', { eager: true });
+// app.use(VueCountryFlag, flagFilePath);
 ```
 
 **Use in component**

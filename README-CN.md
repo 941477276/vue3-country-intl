@@ -258,6 +258,10 @@ const app = createApp(..);
 // 引入svg图标
 let flagFilePath = require.context('vue3-country-intl/lib/country-flag-svgs', true, /\.svg$/);
 app.use(VueCountryFlag, flagFilePath);
+
+// 使用 vite 引入svg图标
+// let flagFilePath = import.meta.glob('vue3-country-intl/lib/country-flag-svgs/*.svg', { eager: true });
+// app.use(VueCountryFlag, flagFilePath);
 ```
 
 **组件中使用**

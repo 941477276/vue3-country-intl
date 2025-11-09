@@ -1,7 +1,7 @@
 {
   "name": "vue3-country-intl",
   "description": "A vue3-based mobile phone area code selection, nationality selection component（一个基于vue3的手机区号选择、国籍选择组件）",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "license": "MIT",
   "author": "hearth_learning_money",
   "scripts": {
@@ -12,7 +12,12 @@
     "build-vue3CountryFlag:esm": "npm run generate-version && rollup -c rollup.vue3CountryFlag.build.config.js --format esm",
     "build-vue3CountryFlag:cjs": "npm run generate-version && rollup -c rollup.vue3CountryFlag.build.config.js --format cjs",
     "generate-version": "node ./generate-version.js",
-    "serve": "vite preview"
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build",
+    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
+    "lint:eslint": "eslint . --fix --cache",
+    "lint": "run-s lint:*"
   },
   "main": "lib/vue3CountryIntl.esm.min.js",
   "browser": "lib/vue3CountryIntl.esm.min.js",
@@ -32,8 +37,25 @@
     "@originjs/vite-plugin-require-context": "^1.0.9",
     "@rollup/plugin-node-resolve": "^13.1.1",
     "@rollup/plugin-replace": "2.4.2",
-    "@vitejs/plugin-vue": "1.2.2",
     "@vue/compiler-sfc": "^3.0.5",
+    "@tsconfig/node22": "^22.0.2",
+    "@types/node": "^22.18.11",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vitejs/plugin-vue-jsx": "^5.1.1",
+    "@vue/eslint-config-typescript": "^14.6.0",
+    "@vue/tsconfig": "^0.8.1",
+
+    "eslint": "^9.37.0",
+    "eslint-plugin-oxlint": "~1.23.0",
+    "eslint-plugin-vue": "~10.5.0",
+    "jiti": "^2.6.1",
+    "npm-run-all2": "^8.0.4",
+    "oxlint": "~1.23.0",
+    "typescript": "~5.9.0",
+    "vite": "^7.1.11",
+    "vite-plugin-vue-devtools": "^8.0.3",
+    "vue-tsc": "^3.1.1",
+
     "ant-design-vue": "^4.2.1",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.6.0",
@@ -47,8 +69,7 @@
     "rollup-plugin-styles": "3.14.1",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-vue": "6.0.0",
-    "vite": "2.2.3",
-    "vue": "^3.2.29"
+    "vue": "^3.5.22"
   },
   "keywords": [
     "country select",
